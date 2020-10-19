@@ -9,7 +9,6 @@ import TheSidebar from "./TheSidebar";
 
 export {
   TheContent,
-
   TheHeader,
   TheHeaderDropdown,
   TheHeaderDropdownMssg,
