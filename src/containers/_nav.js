@@ -2,7 +2,8 @@ import React from "react";
 import CIcon from "@coreui/icons-react";
 import { BiMapPin } from "react-icons/bi";
 import { AiOutlineStock } from "react-icons/ai";
-import { BsFillPeopleFill } from "react-icons/bs";
+import { BsFillPeopleFill, BsFillPersonFill } from "react-icons/bs";
+import { HiSpeakerphone } from "react-icons/hi";
 
 export default [
   {
@@ -19,16 +20,29 @@ export default [
   },
   {
     _tag: "CSidebarNavItem",
+    name: "Salesman",
+    to: "/users",
+    icon: <BsFillPeopleFill className="c-sidebar-nav-icon" />,
+  },
+  {
+    _tag: "CSidebarNavItem",
     name: "Track Salesman",
     to: "/track",
     icon: <BiMapPin className="c-sidebar-nav-icon" />,
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Salesman",
-    to: "/users",
-    icon: <BsFillPeopleFill className="c-sidebar-nav-icon" />,
+    name: "Announcements",
+    to: "/announcements",
+    icon: <HiSpeakerphone className="c-sidebar-nav-icon" />,
   },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Profile",
+    to: "/profile",
+    icon: <BsFillPersonFill className="c-sidebar-nav-icon" />,
+  },
+
   {
     _tag: "CSidebarNavTitle",
     _children: ["Theme"],
