@@ -1,6 +1,8 @@
 import React from "react";
 import CIcon from "@coreui/icons-react";
-// import FontAwesomeIcon from "@fortawesome/fontawesome-svg-core";
+import { BiMapPin } from "react-icons/bi";
+import { AiOutlineStock } from "react-icons/ai";
+import { BsFillPeopleFill } from "react-icons/bs";
 
 export default [
   {
@@ -11,9 +13,21 @@ export default [
   },
   {
     _tag: "CSidebarNavItem",
+    name: "Stocks",
+    to: "/stocks",
+    icon: <AiOutlineStock className="c-sidebar-nav-icon" />,
+  },
+  {
+    _tag: "CSidebarNavItem",
     name: "Track Salesman",
     to: "/track",
-    icon: <CIcon class="cil-bike"></CIcon>,
+    icon: <BiMapPin className="c-sidebar-nav-icon" />,
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Salesman",
+    to: "/users",
+    icon: <BsFillPeopleFill className="c-sidebar-nav-icon" />,
   },
   {
     _tag: "CSidebarNavTitle",

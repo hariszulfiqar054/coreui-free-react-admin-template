@@ -1,6 +1,7 @@
 import React from "react";
 
 const TrackUser = React.lazy(() => import("./views/pages/trackuser/trackuser"));
+const Stocks = React.lazy(() => import("./views/pages/stocks/stocks"));
 
 const Toaster = React.lazy(() =>
   import("./views/notifications/toaster/Toaster")
@@ -130,6 +131,12 @@ const routes = [
     exact: true,
     name: "Track Salesman",
     component: TrackUser,
+  },
+  {
+    path: "/stocks",
+    exact: true,
+    name: "Stocks",
+    component: Stocks,
   },
 ];
 
