@@ -16,6 +16,8 @@ import {
   CModalBody,
   CCollapse,
 } from "@coreui/react";
+import { HiOutlinePlus } from "react-icons/hi";
+import "./user.scss";
 
 import usersData from "./UsersData";
 
@@ -28,6 +30,7 @@ const Users = () => {
   const pageChange = (newPage) => {
     currentPage !== newPage && history.push(`/users?page=${newPage}`);
   };
+  const [addStockToggle, setAddStockToggle] = useState(false);
 
   useEffect(() => {
     currentPage !== page && setPage(currentPage);
@@ -35,7 +38,7 @@ const Users = () => {
 
   return (
     <CRow>
-      {/* <CModal show={true} onClose={() => console.log("")}>
+      <CModal show={addStockToggle} onClose={() => setAddStockToggle(false)}>
         <CModalHeader closeButton>
           <CModalTitle>Modal title</CModalTitle>
         </CModalHeader>
@@ -49,22 +52,24 @@ const Users = () => {
           culpa qui officia deserunt mollit anim id est laborum.
         </CModalBody>
         <CModalFooter>
-          <CButton color="primary">Do Something</CButton>{" "}
-          <CButton color="secondary" onClick={() => console.log('asd')}>
+          <CButton color="primary">Do Something</CButton>
+          <CButton color="secondary" onClick={() => setAddStockToggle(false)}>
             Cancel
           </CButton>
         </CModalFooter>
-      </CModal> */}
-      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <CCol col="6" sm="4" md="2" xl="4" className="mb-3  ">
-          <CButton block color="success">
-            Add Salesman
-          </CButton>
-        </CCol>
-      </div>
+      </CModal>
+
       <CCol xl={12}>
         <CCard>
-          <CCardHeader>Salesman</CCardHeader>
+          <div className="header">
+            <h3 className="header-txt">Salesman</h3>
+
+            <CButton onClick={() => setAddStockToggle(true)}>
+              <HiOutlinePlus size={30} />
+            </CButton>
+          </div>
+          <hr />
+
           <CCardBody>
             <CDataTable
               items={usersData}
