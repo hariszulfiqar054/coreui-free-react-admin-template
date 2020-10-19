@@ -14,6 +14,7 @@ import {
   CModalTitle,
   CModalFooter,
   CModalBody,
+  CCollapse,
 } from "@coreui/react";
 
 import usersData from "./UsersData";
@@ -23,7 +24,7 @@ const Users = () => {
   const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
   const [page, setPage] = useState(currentPage);
-
+  const [toggleMenu, setToggleMenu] = useState(false);
   const pageChange = (newPage) => {
     currentPage !== newPage && history.push(`/users?page=${newPage}`);
   };
@@ -55,7 +56,7 @@ const Users = () => {
         </CModalFooter>
       </CModal> */}
       <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <CCol col="6" sm="4" md="2" xl='4' className="mb-3  ">
+        <CCol col="6" sm="4" md="2" xl="4" className="mb-3  ">
           <CButton block color="success">
             Add Salesman
           </CButton>
@@ -67,18 +68,60 @@ const Users = () => {
           <CCardBody>
             <CDataTable
               items={usersData}
+              tableFilter
+              columnFilter
               fields={[
                 { key: "id", _classes: "font-weight-bold" },
                 "name",
                 "registered",
                 "role",
+                {
+                  key: "show_details",
+                  label: "",
+                  _style: { width: "3%" },
+                  sorter: false,
+                  filter: false,
+                },
               ]}
               hover
               striped
               itemsPerPage={5}
               activePage={page}
-              clickableRows
-              onRowClick={(item) => history.push(`/users/${item.id}`)}
+              // clickableRows
+              scopedSlots={{
+                show_details: (item, index) => {
+                  return (
+                    <td className="py-2">
+                      <CButton
+                        color="primary"
+                        variant="outline"
+                        shape="square"
+                        size="sm"
+                        onClick={() => {
+                          setToggleMenu(!toggleMenu);
+                        }}
+                      >
+                        {toggleMenu ? "Hide Actions" : "Show Actions"}
+                      </CButton>
+                    </td>
+                  );
+                },
+                details: (item, index) => {
+                  return (
+                    <CCollapse show={toggleMenu}>
+                      <CCardBody>
+                        <CButton size="sm" color="info">
+                          Update Salesman information
+                        </CButton>
+                        <CButton size="sm" color="danger" className="ml-1">
+                          Delete Salesman
+                        </CButton>
+                      </CCardBody>
+                    </CCollapse>
+                  );
+                },
+              }}
+              // onRowClick={(item) => history.push(`/users/${item.id}`)}
             />
             <CPagination
               activePage={page}
