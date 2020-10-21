@@ -16,6 +16,11 @@ import {
   CModalFooter,
   CModalBody,
   CCollapse,
+  CForm,
+  CFormGroup,
+  CFormText,
+  CLabel,
+  CInput,
 } from "@coreui/react";
 
 import usersData from "./dummyData";
@@ -26,9 +31,9 @@ const Stocks = () => {
   const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
   const [page, setPage] = useState(currentPage);
-  const [toggleMenu, setToggleMenu] = useState(false);
+  const [toggleMenu, setToggleMenu] = useState(null);
   const pageChange = (newPage) => {
-    currentPage !== newPage && history.push(`/users?page=${newPage}`);
+    currentPage !== newPage && history.push(`/stocks?page=${newPage}`);
   };
   const [addStockToggle, setAddStockToggle] = useState(false);
 
@@ -40,19 +45,29 @@ const Stocks = () => {
     <CRow>
       <CModal show={addStockToggle} onClose={() => setAddStockToggle(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Modal title</CModalTitle>
+          <CModalTitle>Add Stock</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          <p className="model-text">Enter the Required information of stocks</p>
+          <CForm>
+            <CFormGroup>
+              <CLabel>Item</CLabel>
+              <CInput placeholder="Enter Item name.." />
+              <CFormText className="help-block">
+                Please enter item name
+              </CFormText>
+            </CFormGroup>
+            <CFormGroup>
+              <CLabel>Quantity</CLabel>
+              <CInput placeholder="Enter Item quantity.." />
+              <CFormText className="help-block">
+                Please enter item quantity
+              </CFormText>
+            </CFormGroup>
+          </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="primary">Do Something</CButton>
+          <CButton color="primary">Confirm</CButton>
           <CButton color="secondary" onClick={() => setAddStockToggle(false)}>
             Cancel
           </CButton>
@@ -82,7 +97,7 @@ const Stocks = () => {
 
                 {
                   key: "show_details",
-                  label: "",
+                  label: "Actions",
                   _style: { width: "3%" },
                   sorter: false,
                   filter: false,
@@ -103,23 +118,26 @@ const Stocks = () => {
                         shape="square"
                         size="sm"
                         onClick={() => {
-                          setToggleMenu(!toggleMenu);
+                          setToggleMenu(item?.id);
+                          if (toggleMenu == item?.id) setToggleMenu(null);
                         }}
                       >
-                        {toggleMenu ? "Hide Actions" : "Show Actions"}
+                        {toggleMenu == item?.id
+                          ? "Hide Actions"
+                          : "Show Actions"}
                       </CButton>
                     </td>
                   );
                 },
                 details: (item, index) => {
                   return (
-                    <CCollapse show={toggleMenu}>
+                    <CCollapse show={toggleMenu == item?.id ? true : false}>
                       <CCardBody>
                         <CButton size="sm" color="info">
-                          Update Salesman information
+                          Update Stock items
                         </CButton>
                         <CButton size="sm" color="danger" className="ml-1">
-                          Delete Salesman
+                          Delete Stock
                         </CButton>
                       </CCardBody>
                     </CCollapse>
