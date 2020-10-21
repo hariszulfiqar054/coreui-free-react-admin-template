@@ -3,7 +3,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import {
   CCard,
   CCardBody,
-  CCardHeader,
   CCol,
   CDataTable,
   CRow,
@@ -19,7 +18,6 @@ import {
   CFormText,
   CLabel,
   CInput,
-  CHeader,
 } from "@coreui/react";
 import { HiOutlinePlus } from "react-icons/hi";
 import "./user.scss";
