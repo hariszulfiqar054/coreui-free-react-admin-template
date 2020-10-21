@@ -7,7 +7,6 @@ import {
   CCol,
   CDataTable,
   CRow,
-  CPagination,
   CButton,
   CModal,
   CModalHeader,
@@ -15,44 +14,97 @@ import {
   CModalFooter,
   CModalBody,
   CCollapse,
+  CForm,
+  CFormGroup,
+  CFormText,
+  CLabel,
+  CInput,
+  CHeader,
 } from "@coreui/react";
 import { HiOutlinePlus } from "react-icons/hi";
 import "./user.scss";
 
-import usersData from "./UsersData";
-
 const Users = () => {
   const history = useHistory();
-  const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
-  const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
-  const [page, setPage] = useState(currentPage);
-  const [toggleMenu, setToggleMenu] = useState(false);
-  const pageChange = (newPage) => {
-    currentPage !== newPage && history.push(`/users?page=${newPage}`);
-  };
-  const [addStockToggle, setAddStockToggle] = useState(false);
+  const [toggleMenu, setToggleMenu] = useState(null);
+  const [newSalesmanName, setNewSalesmanName] = useState(null);
+  const [newSalesmanPassword, setNewSalesmanPassword] = useState(null);
+  const [salesman, setSalesman] = useState([
+    {
+      id: 1,
+      name: "Haris",
+      registered: "2018/01/01",
+      role: "Saleman",
+      city: "Lahore",
+      password: "sunday123",
+      contact: "03084567319",
+    },
+    {
+      id: 2,
+      name: "Haris",
+      registered: "2018/01/01",
+      role: "Saleman",
+      city: "Lahore",
+      password: "sunday123",
+      contact: "03084567319",
+    },
+    {
+      id: 3,
+      name: "Haris",
+      registered: "2018/01/01",
+      role: "Saleman",
+      city: "Lahore",
+      password: "sunday123",
+      contact: "03084567319",
+    },
+    {
+      id: 5,
+      name: "Haris",
+      registered: "2018/01/01",
+      role: "Saleman",
+      city: "Lahore",
+      password: "sunday123",
+      contact: "03084567319",
+    },
+  ]);
 
-  useEffect(() => {
-    currentPage !== page && setPage(currentPage);
-  }, [currentPage, page]);
+  const [addStockToggle, setAddStockToggle] = useState(false);
 
   return (
     <CRow>
       <CModal show={addStockToggle} onClose={() => setAddStockToggle(false)}>
         <CModalHeader closeButton>
-          <CModalTitle>Modal title</CModalTitle>
+          <CModalTitle>Add Salesman</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          <p className="model-text">
+            Enter the Required information of salesman
+          </p>
+          <CForm>
+            <CFormGroup>
+              <CLabel>Contact</CLabel>
+              <CInput placeholder="Enter Contact.." />
+              <CFormText className="help-block">
+                Please enter salesman contact
+              </CFormText>
+            </CFormGroup>
+            <CFormGroup>
+              <CLabel htmlFor="nf-password">Password</CLabel>
+              <CInput
+                type="password"
+                id="nf-password"
+                name="nf-password"
+                placeholder="Enter Password.."
+                autoComplete="current-password"
+              />
+              <CFormText className="help-block">
+                Please enter your password
+              </CFormText>
+            </CFormGroup>
+          </CForm>
         </CModalBody>
         <CModalFooter>
-          <CButton color="primary">Do Something</CButton>
+          <CButton color="primary">Confirm </CButton>
           <CButton color="secondary" onClick={() => setAddStockToggle(false)}>
             Cancel
           </CButton>
@@ -72,17 +124,21 @@ const Users = () => {
 
           <CCardBody>
             <CDataTable
-              items={usersData}
+              items={salesman}
               tableFilter
               columnFilter
               fields={[
                 { key: "id", _classes: "font-weight-bold" },
-                "name",
-                "registered",
-                "role",
+                { key: "name", label: "Name" },
+                { key: "password", label: "Password" },
+                { key: "contact", label: "Contact" },
+                { key: "role", label: "Role" },
+                { key: "city", label: "City" },
+                { key: "registered", label: "Registered" },
+
                 {
                   key: "show_details",
-                  label: "",
+                  label: "Actions",
                   _style: { width: "3%" },
                   sorter: false,
                   filter: false,
@@ -90,8 +146,6 @@ const Users = () => {
               ]}
               hover
               striped
-              itemsPerPage={5}
-              activePage={page}
               // clickableRows
               scopedSlots={{
                 show_details: (item, index) => {
@@ -103,17 +157,20 @@ const Users = () => {
                         shape="square"
                         size="sm"
                         onClick={() => {
-                          setToggleMenu(!toggleMenu);
+                          setToggleMenu(item?.id);
+                          if (toggleMenu == item?.id) setToggleMenu(null);
                         }}
                       >
-                        {toggleMenu ? "Hide Actions" : "Show Actions"}
+                        {toggleMenu == item?.id
+                          ? "Hide Actions"
+                          : "Show Actions"}
                       </CButton>
                     </td>
                   );
                 },
                 details: (item, index) => {
                   return (
-                    <CCollapse show={toggleMenu}>
+                    <CCollapse show={toggleMenu == item?.id ? true : false}>
                       <CCardBody>
                         <CButton size="sm" color="info">
                           Update Salesman information
@@ -126,14 +183,6 @@ const Users = () => {
                   );
                 },
               }}
-              // onRowClick={(item) => history.push(`/users/${item.id}`)}
-            />
-            <CPagination
-              activePage={page}
-              onActivePageChange={pageChange}
-              pages={5}
-              doubleArrows={false}
-              align="center"
             />
           </CCardBody>
         </CCard>
