@@ -1,17 +1,8 @@
-import { createStore } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import AuthReducer from "./redux/reducers/auth.reducer";
+import thunk from "redux-thunk";
 
-const initialState = {
-  sidebarShow: 'responsive'
-}
+const Reducer = combineReducers({ auth: AuthReducer });
 
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return {...state, ...rest }
-    default:
-      return state
-  }
-}
-
-const store = createStore(changeState)
-export default store
+const store = createStore(Reducer, applyMiddleware(thunk));
+export default store;

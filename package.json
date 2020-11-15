@@ -33,11 +33,12 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.11",
+    "axios": "^0.21.0",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
-    "dotenv": "^8.2.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
+    "formik": "^2.2.5",
     "google-maps-react": "^2.0.6",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
@@ -47,7 +48,9 @@
     "react-icons": "^3.11.0",
     "react-redux": "7.2.1",
     "react-router-dom": "^5.2.0",
-    "redux": "4.0.5"
+    "redux": "4.0.5",
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "auto-changelog": "2.2.0",

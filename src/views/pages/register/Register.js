@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   CButton,
   CCard,
@@ -11,9 +11,18 @@ import {
   CInputGroup,
   CInputGroupPrepend,
   CInputGroupText,
-  CRow
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+  CRow,
+  CCardHeader,
+  CDropdown,
+  CDropdownToggle,
+  CDropdownMenu,
+  CDropdownItem,
+  CDropdownDivider,
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { AiFillPhone } from "react-icons/ai";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 const Register = () => {
   return (
@@ -23,58 +32,116 @@ const Register = () => {
           <CCol md="9" lg="7" xl="6">
             <CCard className="mx-4">
               <CCardBody className="p-4">
-                <CForm>
-                  <h1>Register</h1>
-                  <p className="text-muted">Create your account</p>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>
-                        <CIcon name="cil-user" />
-                      </CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput type="text" placeholder="Username" autoComplete="username" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>@</CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput type="text" placeholder="Email" autoComplete="email" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-3">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>
-                        <CIcon name="cil-lock-locked" />
-                      </CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput type="password" placeholder="Password" autoComplete="new-password" />
-                  </CInputGroup>
-                  <CInputGroup className="mb-4">
-                    <CInputGroupPrepend>
-                      <CInputGroupText>
-                        <CIcon name="cil-lock-locked" />
-                      </CInputGroupText>
-                    </CInputGroupPrepend>
-                    <CInput type="password" placeholder="Repeat password" autoComplete="new-password" />
-                  </CInputGroup>
-                  <CButton color="success" block>Create Account</CButton>
-                </CForm>
+                <Formik
+                  initialValues={{
+                    name: "",
+                    contact: "",
+                    password: "",
+                    confirm_password: "",
+                  }}
+                  validationSchema={Yup.object({
+                    name: Yup.string().required("Required"),
+                    contact: Yup.string()
+                      .required("Required")
+                      .matches(/^\d+$/, "Only digits are allowed")
+                      .max(11, "Length should be 11 digit")
+                      .min(11, "Length should be 11 digit"),
+                    password: Yup.string()
+                      .required("Required")
+                      .min(5, "Password should be minimum lenght of 5"),
+                    confirm_password: Yup.string().required("Required"),
+                  })}
+                  onSubmit={(values, formikActions) => {
+                    formikActions.setSubmitting(false);
+                  }}
+                >
+                  {({
+                    handleBlur,
+                    handleChange,
+                    handleSubmit,
+                    errors,
+                    touched,
+                    values,
+                  }) => (
+                    <CForm>
+                      <h1>Register</h1>
+                      <p className="text-muted">Create your account</p>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupPrepend>
+                          <CInputGroupText>
+                            <CIcon name="cil-user" />
+                          </CInputGroupText>
+                        </CInputGroupPrepend>
+                        <CInput
+                          type="text"
+                          placeholder="Username"
+                          autoComplete="username"
+                        />
+                      </CInputGroup>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupPrepend>
+                          <CInputGroupText>
+                            <AiFillPhone />
+                          </CInputGroupText>
+                        </CInputGroupPrepend>
+                        <CInput placeholder="Contact" />
+                      </CInputGroup>
+                      <CInputGroup className="mb-3">
+                        <CInputGroupPrepend>
+                          <CInputGroupText>
+                            <CIcon name="cil-lock-locked" />
+                          </CInputGroupText>
+                        </CInputGroupPrepend>
+                        <CInput
+                          type="password"
+                          placeholder="Password"
+                          autoComplete="new-password"
+                        />
+                      </CInputGroup>
+                      <CInputGroup className="mb-4">
+                        <CInputGroupPrepend>
+                          <CInputGroupText>
+                            <CIcon name="cil-lock-locked" />
+                          </CInputGroupText>
+                        </CInputGroupPrepend>
+                        <CInput
+                          type="password"
+                          placeholder="Repeat password"
+                          autoComplete="new-password"
+                        />
+                      </CInputGroup>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginBottom: "12px",
+                        }}
+                      >
+                        <CDropdown style={{ alignSelf: "center" }}>
+                          <CDropdownToggle color="info">
+                            Select City
+                          </CDropdownToggle>
+                          <CDropdownMenu>
+                            <CDropdownItem>Lahore</CDropdownItem>
+                            <CDropdownItem>Karachi</CDropdownItem>
+                            <CDropdownItem>Islamabad</CDropdownItem>
+                            <CDropdownItem>Multan</CDropdownItem>
+                          </CDropdownMenu>
+                        </CDropdown>
+                      </div>
+                      <CButton color="success" block>
+                        Create Account
+                      </CButton>
+                    </CForm>
+                  )}
+                </Formik>
               </CCardBody>
-              <CCardFooter className="p-4">
-                <CRow>
-                  <CCol xs="12" sm="6">
-                    <CButton className="btn-facebook mb-1" block><span>facebook</span></CButton>
-                  </CCol>
-                  <CCol xs="12" sm="6">
-                    <CButton className="btn-twitter mb-1" block><span>twitter</span></CButton>
-                  </CCol>
-                </CRow>
-              </CCardFooter>
             </CCard>
           </CCol>
         </CRow>
       </CContainer>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

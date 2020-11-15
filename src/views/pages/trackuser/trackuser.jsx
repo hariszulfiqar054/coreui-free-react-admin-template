@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
-require("dotenv").config();
 
 function Trackuser(props) {
   const [location, setLocation] = useState(null);
