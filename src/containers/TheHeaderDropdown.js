@@ -8,8 +8,11 @@ import {
   CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { logoutUser } from "../redux/actions/auth.action";
+import { useDispatch } from "react-redux";
 
 const TheHeaderDropdown = () => {
+  const dispatch = useDispatch();
   return (
     <CDropdown inNav className="c-header-nav-items mx-2" direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={false}>
@@ -32,7 +35,7 @@ const TheHeaderDropdown = () => {
         </CDropdownItem>
 
         <CDropdownItem divider />
-        <CDropdownItem>
+        <CDropdownItem onClick={() => dispatch(logoutUser())}>
           <CIcon name="cil-lock-locked" className="mfe-2" />
           Logout
         </CDropdownItem>

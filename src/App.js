@@ -48,16 +48,16 @@ class App extends Component {
               name="Page 500"
               render={(props) => <Page500 {...props} />}
             />
-            {/* <ProtectedRoute
-              path="/"
-              name="Home"
-              render={(props) => <TheLayout {...props} />}
-            /> */}
-            <Route
+            <ProtectedRoute
               path="/"
               name="Home"
               render={(props) => <TheLayout {...props} />}
             />
+            {/* <Route
+              path="/"
+              name="Home"
+              render={(props) => <TheLayout {...props} />}
+            /> */}
           </Switch>
         </React.Suspense>
       </HashRouter>
