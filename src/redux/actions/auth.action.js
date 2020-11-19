@@ -12,3 +12,10 @@ export const logoutUser = () => {
     type: Types.LOGOUT_USER,
   };
 };
+
+export const setToken = (token) => {
+  return {
+    type: Types.SET_TOKEN,
+    payload: token,
+  };
+};

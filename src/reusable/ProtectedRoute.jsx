@@ -3,10 +3,10 @@ import { Route, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function ProtectedRoute({ component: Component, ...rest }) {
-  const user = useSelector((state) => state?.auth?.user);
+  const isAuth = useSelector((state) => state?.auth?.isAuth);
   return (
     <>
-      {user ? (
+      {isAuth ? (
         <Route component={Component} {...rest} />
       ) : (
         <Redirect to={{ pathname: "/login" }} />

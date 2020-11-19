@@ -35,7 +35,12 @@ const TheHeaderDropdown = () => {
         </CDropdownItem>
 
         <CDropdownItem divider />
-        <CDropdownItem onClick={() => dispatch(logoutUser())}>
+        <CDropdownItem
+          onClick={() => {
+            localStorage.setItem("token", null);
+            dispatch(logoutUser());
+          }}
+        >
           <CIcon name="cil-lock-locked" className="mfe-2" />
           Logout
         </CDropdownItem>

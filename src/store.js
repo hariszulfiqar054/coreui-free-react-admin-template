@@ -21,7 +21,7 @@ const persistor = persistStore(store);
 axios.defaults.baseURL = ENV.BASE_URL;
 axios.interceptors.request.use(
   (config) => {
-    config.headers.Authorization = store.getState()?.auth?.user?.token;
+    config.headers.Authorization = store.getState()?.auth?.token;
     return config;
   },
   (error) => {

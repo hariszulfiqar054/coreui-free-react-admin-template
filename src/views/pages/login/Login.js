@@ -22,8 +22,9 @@ import * as Yup from "yup";
 import { AiFillPhone } from "react-icons/ai";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../../redux/actions/auth.action";
+import { setUser, setToken } from "../../../redux/actions/auth.action";
 import { useHistory } from "react-router-dom";
+import Roles from "../../../constants/roles";
 
 const Login = () => {
   const history = useHistory();
@@ -36,8 +37,14 @@ const Login = () => {
     try {
       const response = await axios.post("user/login", { contact, password });
       if (response?.data) {
-        dispatch(setUser(response.data));
-        history.replace("/");
+        dispatch(setUser(response.data?.data));
+        dispatch(setToken(response?.data?.token));
+        localStorage.setItem("token", response?.data?.token);
+        console.log(localStorage.getItem("token"));
+        setLoading(false);
+        if (response?.data?.data?.role == Roles.TEAM_LEADER)
+          history.replace("/");
+        else setError("You are unauthorized");
       }
     } catch (error) {
       setError(error?.response?.data?.message);
@@ -99,7 +106,7 @@ const Login = () => {
                               />
                             </CInputGroup>
 
-                            {errors.contact || touched.contact ? (
+                            {errors.contact && touched.contact ? (
                               <p style={{ color: "red" }}>{errors.contact}</p>
                             ) : null}
                           </div>
@@ -119,7 +126,7 @@ const Login = () => {
                                 value={values.password}
                               />
                             </CInputGroup>
-                            {errors.password || touched.password ? (
+                            {errors.password && touched.password ? (
                               <p style={{ color: "red" }}>{errors.password}</p>
                             ) : null}
                           </div>
