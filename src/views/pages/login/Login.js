@@ -39,8 +39,7 @@ const Login = () => {
       if (response?.data) {
         dispatch(setUser(response.data?.data));
         dispatch(setToken(response?.data?.token));
-        localStorage.setItem("token", response?.data?.token);
-        console.log(localStorage.getItem("token"));
+
         setLoading(false);
         if (response?.data?.data?.role == Roles.TEAM_LEADER)
           history.replace("/");

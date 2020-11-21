@@ -37,7 +37,6 @@ const TheHeaderDropdown = () => {
         <CDropdownItem divider />
         <CDropdownItem
           onClick={() => {
-            localStorage.setItem("token", null);
             dispatch(logoutUser());
           }}
         >

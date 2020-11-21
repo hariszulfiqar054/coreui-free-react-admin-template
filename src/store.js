@@ -8,9 +8,9 @@ import storage from "redux-persist/lib/storage";
 import ChangeState from "./redux/reducers/sideBar.reducer";
 
 const persistConfig = {
-  key: "user",
+  key: "root",
   storage: storage,
-  whitelist: ["user"], // which reducer want to store
+  whitelist: ["auth"], // which reducer want to store
 };
 
 const Reducer = combineReducers({ auth: AuthReducer, ui: ChangeState });
