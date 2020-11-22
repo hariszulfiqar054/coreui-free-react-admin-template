@@ -59,20 +59,12 @@ const Brands = React.lazy(() => import("./views/icons/brands/Brands"));
 const Alerts = React.lazy(() => import("./views/notifications/alerts/Alerts"));
 const Badges = React.lazy(() => import("./views/notifications/badges/Badges"));
 const Modals = React.lazy(() => import("./views/notifications/modals/Modals"));
-const Colors = React.lazy(() => import("./views/theme/colors/Colors"));
-const Typography = React.lazy(() =>
-  import("./views/theme/typography/Typography")
-);
-const Widgets = React.lazy(() => import("./views/widgets/Widgets"));
 const Users = React.lazy(() => import("./views/users/Users"));
 const User = React.lazy(() => import("./views/users/User"));
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/dashboard", name: "Dashboard", component: Dashboard },
-  { path: "/theme", name: "Theme", component: Colors, exact: true },
-  { path: "/theme/colors", name: "Colors", component: Colors },
-  { path: "/theme/typography", name: "Typography", component: Typography },
   { path: "/base", name: "Base", component: Cards, exact: true },
   { path: "/base/breadcrumbs", name: "Breadcrumbs", component: Breadcrumbs },
   { path: "/base/cards", name: "Cards", component: Cards },
@@ -122,7 +114,7 @@ const routes = [
   { path: "/notifications/badges", name: "Badges", component: Badges },
   { path: "/notifications/modals", name: "Modals", component: Modals },
   { path: "/notifications/toaster", name: "Toaster", component: Toaster },
-  { path: "/widgets", name: "Widgets", component: Widgets },
+
   { path: "/users", exact: true, name: "Salesman", component: Users },
   {
     path: "/users/:id",

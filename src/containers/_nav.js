@@ -45,22 +45,6 @@ export default [
 
   {
     _tag: "CSidebarNavTitle",
-    _children: ["Theme"],
-  },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Colors",
-    to: "/theme/colors",
-    icon: "cil-drop",
-  },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Typography",
-    to: "/theme/typography",
-    icon: "cil-pencil",
-  },
-  {
-    _tag: "CSidebarNavTitle",
     _children: ["Components"],
   },
   {
@@ -240,22 +224,9 @@ export default [
       },
     ],
   },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Widgets",
-    to: "/widgets",
-    icon: "cil-calculator",
-    badge: {
-      color: "info",
-      text: "NEW",
-    },
-  },
+
   {
     _tag: "CSidebarNavDivider",
-  },
-  {
-    _tag: "CSidebarNavTitle",
-    _children: ["Extras"],
   },
   {
     _tag: "CSidebarNavDropdown",
