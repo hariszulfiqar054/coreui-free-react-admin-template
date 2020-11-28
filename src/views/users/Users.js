@@ -326,12 +326,24 @@ const Users = () => {
                   columnFilter
                   fields={[
                     { key: "_id", label: "ID", _classes: "font-weight-bold" },
-                    { key: "name", label: "Name" },
-                    { key: "contact", label: "Contact" },
-                    { key: "role", label: "Role" },
-                    { key: "city", label: "City" },
-                    { key: "password", label: "Password" },
-                    { key: "time_stamp", label: "Registered" },
+                    { key: "name", label: "Name", _classes: "text-center" },
+                    {
+                      key: "contact",
+                      label: "Contact",
+                      _classes: "text-center",
+                    },
+                    { key: "role", label: "Role", _classes: "text-center" },
+                    { key: "city", label: "City", _classes: "text-center" },
+                    {
+                      key: "password",
+                      label: "Password",
+                      _classes: "text-center",
+                    },
+                    {
+                      key: "time_stamp",
+                      label: "Registered",
+                      _classes: "text-center",
+                    },
 
                     {
                       key: "show_details",

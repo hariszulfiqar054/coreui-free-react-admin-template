@@ -254,10 +254,18 @@ const Announcements = () => {
                   tableFilter
                   columnFilter
                   fields={[
-                    { key: "_id", _classes: "font-weight-bold" },
-                    { key: "text", label: "Announcement" },
-                    { key: "time_stamp", label: "Date" },
-                    { key: "city", label: "City" },
+                    { key: "_id", _classes: "font-weight-bold text-center" },
+                    {
+                      key: "text",
+                      label: "Announcement",
+                      _classes: "text-center",
+                    },
+                    {
+                      key: "time_stamp",
+                      label: "Date",
+                      _classes: "text-center",
+                    },
+                    { key: "city", label: "City", _classes: "text-center" },
 
                     {
                       key: "show_details",
