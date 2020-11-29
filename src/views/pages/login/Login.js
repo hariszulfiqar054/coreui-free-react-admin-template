@@ -15,6 +15,8 @@ import {
   CRow,
   CSpinner,
   CAlert,
+  CValidFeedback,
+  CInvalidFeedback,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Formik } from "formik";
@@ -97,17 +99,27 @@ const Login = () => {
                                 </CInputGroupText>
                               </CInputGroupPrepend>
                               <CInput
+                                invalid={
+                                  errors.contact && touched.contact
+                                    ? true
+                                    : false
+                                }
+                                valid={
+                                  !errors.contact && !touched.contact
+                                    ? null
+                                    : true
+                                }
                                 type="text"
                                 placeholder="Contact"
                                 onChange={handleChange("contact")}
                                 onBlur={handleBlur("contact")}
                                 value={values.contact}
                               />
+                              <CValidFeedback></CValidFeedback>
+                              <CInvalidFeedback>
+                                {errors.contact}
+                              </CInvalidFeedback>
                             </CInputGroup>
-
-                            {errors.contact && touched.contact ? (
-                              <p style={{ color: "red" }}>{errors.contact}</p>
-                            ) : null}
                           </div>
                           <div className="mb-4">
                             <CInputGroup>
@@ -117,6 +129,16 @@ const Login = () => {
                                 </CInputGroupText>
                               </CInputGroupPrepend>
                               <CInput
+                                invalid={
+                                  errors.password && touched.password
+                                    ? true
+                                    : false
+                                }
+                                valid={
+                                  !errors.password && touched.password
+                                    ? true
+                                    : false
+                                }
                                 type="password"
                                 placeholder="Password"
                                 autoComplete="current-password"
@@ -124,10 +146,11 @@ const Login = () => {
                                 onBlur={handleBlur("password")}
                                 value={values.password}
                               />
+                              <CValidFeedback></CValidFeedback>
+                              <CInvalidFeedback>
+                                {errors.password}
+                              </CInvalidFeedback>
                             </CInputGroup>
-                            {errors.password && touched.password ? (
-                              <p style={{ color: "red" }}>{errors.password}</p>
-                            ) : null}
                           </div>
                           <CRow>
                             <CCol xs="6">

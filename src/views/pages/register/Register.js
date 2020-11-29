@@ -3,7 +3,6 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CCardFooter,
   CCol,
   CContainer,
   CForm,
@@ -12,14 +11,14 @@ import {
   CInputGroupPrepend,
   CInputGroupText,
   CRow,
-  CCardHeader,
   CDropdown,
   CDropdownToggle,
   CDropdownMenu,
   CDropdownItem,
-  CDropdownDivider,
   CAlert,
   CSpinner,
+  CInvalidFeedback,
+  CValidFeedback,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { AiFillPhone } from "react-icons/ai";
@@ -121,16 +120,21 @@ const Register = () => {
                               </CInputGroupText>
                             </CInputGroupPrepend>
                             <CInput
+                              invalid={
+                                errors.name && touched.name ? true : false
+                              }
+                              valid={
+                                !errors.name && touched.name ? true : false
+                              }
                               type="text"
                               placeholder="Username"
                               onChange={handleChange("name")}
                               onBlur={handleBlur("name")}
                               value={values.name}
                             />
+                            <CValidFeedback></CValidFeedback>
+                            <CInvalidFeedback>{errors.name}</CInvalidFeedback>
                           </CInputGroup>
-                          {errors.name && touched.name ? (
-                            <p style={{ color: "red" }}>{errors.name}</p>
-                          ) : null}
                         </div>
                         <div className="mb-3">
                           <CInputGroup>
@@ -140,15 +144,24 @@ const Register = () => {
                               </CInputGroupText>
                             </CInputGroupPrepend>
                             <CInput
+                              invalid={
+                                errors.contact && touched.contact ? true : false
+                              }
+                              valid={
+                                !errors.contact && touched.contact
+                                  ? true
+                                  : false
+                              }
                               placeholder="Contact"
                               onChange={handleChange("contact")}
                               onBlur={handleBlur("contact")}
                               value={values.contact}
                             />
+                            <CValidFeedback></CValidFeedback>
+                            <CInvalidFeedback>
+                              {errors.contact}
+                            </CInvalidFeedback>
                           </CInputGroup>
-                          {errors.contact && touched.contact ? (
-                            <p style={{ color: "red" }}>{errors.contact}</p>
-                          ) : null}
                         </div>
                         <div className="mb-3">
                           <CInputGroup>
@@ -158,16 +171,28 @@ const Register = () => {
                               </CInputGroupText>
                             </CInputGroupPrepend>
                             <CInput
+                              invalid={
+                                errors.password && touched.password
+                                  ? true
+                                  : false
+                              }
+                              valid={
+                                !errors.password && touched.password
+                                  ? true
+                                  : false
+                              }
                               type="password"
                               placeholder="Password"
                               onChange={handleChange("password")}
                               onBlur={handleBlur("password")}
                               value={values.password}
                             />
+
+                            <CValidFeedback></CValidFeedback>
+                            <CInvalidFeedback>
+                              {errors.password}
+                            </CInvalidFeedback>
                           </CInputGroup>
-                          {errors.password && touched.password ? (
-                            <p style={{ color: "red" }}>{errors.password}</p>
-                          ) : null}
                         </div>
                         <div className="mb-4">
                           <CInputGroup>
@@ -177,18 +202,45 @@ const Register = () => {
                               </CInputGroupText>
                             </CInputGroupPrepend>
                             <CInput
+                              invalid={
+                                (errors.confirm_password &&
+                                  touched.confirm_password) ||
+                                (values.password !== values.confirm_password &&
+                                  values.password.length > 0 &&
+                                  values.confirm_password.length > 0)
+                                  ? true
+                                  : false
+                              }
+                              valid={
+                                (!errors.confirm_password &&
+                                  touched.confirm_password) ||
+                                (values.password === values.confirm_password &&
+                                  values.password.length > 0 &&
+                                  values.confirm_password.length > 0)
+                                  ? true
+                                  : false
+                              }
                               type="password"
                               placeholder="Repeat password"
                               onChange={handleChange("confirm_password")}
                               onBlur={handleBlur("confirm_password")}
                               value={values.confirm_password}
                             />
+
+                            <CValidFeedback></CValidFeedback>
+                            <CInvalidFeedback>
+                              {(errors.confirm_password &&
+                                touched.confirm_password) ||
+                                (values.password !== values.confirm_password
+                                  ? "Password Not Matched"
+                                  : "Required")}
+                            </CInvalidFeedback>
                           </CInputGroup>
-                          {(errors.confirm_password &&
+                          {/* {(errors.confirm_password &&
                             touched.confirm_password) ||
                           values.password !== values.confirm_password ? (
                             <p style={{ color: "red" }}>Password not matched</p>
-                          ) : null}
+                          ) : null} */}
                         </div>
                         <div
                           style={{
