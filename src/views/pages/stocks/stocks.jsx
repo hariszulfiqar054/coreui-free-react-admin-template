@@ -24,10 +24,8 @@ import {
   CSpinner,
   CAlert,
 } from "@coreui/react";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import { usePaginatedQuery } from "react-query";
-import usersData from "./dummyData";
 import "./stocks.scss";
 
 const Stocks = () => {
@@ -39,6 +37,8 @@ const Stocks = () => {
   const [addStockToggle, setAddStockToggle] = useState(false);
   const [addLoading, setaddLoading] = useState(false);
   const [announceTxt, setAnnounceTxt] = useState(null);
+  const [itemQty, setItemQty] = useState("");
+  const [img, setImg] = useState(null);
   const [addAnnErr, setAddAnnErr] = useState(null);
   const [currAnn, setCurrAnn] = useState(null);
   const [delErr, setDelErr] = useState(null);
@@ -80,6 +80,60 @@ const Stocks = () => {
       setDelErr("Error while deleting announcement");
     }
     setaddLoading(false);
+  };
+
+  //Update Item
+  const updateItem = async () => {
+    if (!announceTxt && !itemQty) {
+      setAddAnnErr("Fill Atleast one field");
+    } else {
+      setaddLoading(true);
+      const data = {};
+      if (announceTxt) data.item_name = announceTxt;
+      if (itemQty) data.quantity = Number(itemQty);
+      data.id = currAnn;
+      try {
+        const response = await axios.put("stocks/updateStocks", data);
+        if (response?.data) {
+          setAnnounceTxt("");
+          setItemQty("");
+          setAddStockToggle(false);
+          refetch();
+        }
+      } catch (error) {
+        setAddAnnErr("Error while updating item");
+      }
+      setaddLoading(false);
+    }
+  };
+
+  //Add Item
+  const addItem = async () => {
+    if (!announceTxt || !itemQty || !img) {
+      setAddAnnErr("Fill all fields");
+    } else if (!/^\d+$/.test(itemQty)) {
+      setAddAnnErr("Quantity Should be in numeric");
+    } else {
+      setaddLoading(true);
+      try {
+        const formBody = new FormData();
+        formBody.append("item_name", announceTxt);
+        formBody.append("quantity", Number(itemQty));
+        formBody.append("img", img, img?.name);
+        const response = await axios.post("stocks/addItem", formBody);
+        if (response?.data) {
+          setAnnounceTxt("");
+          setItemQty("");
+          setImg(null);
+          setAddStockToggle(false);
+          refetch();
+        }
+      } catch (error) {
+        console.log(error?.response?.data);
+        setAddAnnErr("Error while adding item");
+      }
+      setaddLoading(false);
+    }
   };
 
   return (
@@ -135,26 +189,66 @@ const Stocks = () => {
             <CForm>
               <CFormGroup>
                 <CLabel>Item</CLabel>
-                <CInput placeholder="Enter Item name.." />
+                <CInput
+                  value={announceTxt}
+                  onChange={(e) => setAnnounceTxt(e.target.value)}
+                  placeholder="Enter Item name.."
+                />
                 <CFormText className="help-block">
                   Please enter item name
                 </CFormText>
               </CFormGroup>
+              {actionType == "add" && (
+                <CFormGroup>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <CLabel>Item Image</CLabel>
+                    <input
+                      type="file"
+                      onChange={(e) => setImg(e.target.files[0])}
+                    />
+                  </div>
+                </CFormGroup>
+              )}
               <CFormGroup>
                 <CLabel>Quantity</CLabel>
-                <CInput placeholder="Enter Item quantity.." />
+                <CInput
+                  value={itemQty}
+                  onChange={(e) => setItemQty(e.target.value)}
+                  placeholder="Enter Item quantity.."
+                />
                 <CFormText className="help-block">
                   Please enter item quantity
                 </CFormText>
               </CFormGroup>
             </CForm>
           </CModalBody>
-          <CModalFooter>
-            <CButton color="primary">Confirm</CButton>
-            <CButton color="secondary" onClick={() => setAddStockToggle(false)}>
-              Cancel
-            </CButton>
-          </CModalFooter>
+          {addLoading ? (
+            <div
+              className="mb-3"
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <CSpinner />
+            </div>
+          ) : (
+            <CModalFooter>
+              <CButton
+                onClick={actionType == "add" ? addItem : updateItem}
+                color="primary"
+              >
+                Confirm
+              </CButton>
+              <CButton
+                color="secondary"
+                onClick={() => setAddStockToggle(false)}
+              >
+                Cancel
+              </CButton>
+            </CModalFooter>
+          )}
         </CModal>
 
         {status == "error" && (
