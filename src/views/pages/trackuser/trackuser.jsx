@@ -10,7 +10,13 @@ function Trackuser(props) {
     });
   }, []);
   return (
-    <Map google={props.google} zoom={2}>
+    <Map
+      google={props.google}
+      zoom={15}
+      center={{ lat: location?.latitude, lng: location?.longitude }}
+      centerAroundCurrentLocation
+      // initialCenter={{ lat: 30.3753, lng: 69.3451 }}
+    >
       <Marker
         onClick={() => console.log("marker")}
         name={"Current location"}

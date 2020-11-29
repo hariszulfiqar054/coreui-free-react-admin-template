@@ -9,6 +9,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { logoutUser } from "../redux/actions/auth.action";
+import { setCurrentItem } from "../redux/actions/stock.action";
 import { useDispatch } from "react-redux";
 
 const TheHeaderDropdown = () => {
@@ -37,6 +38,7 @@ const TheHeaderDropdown = () => {
         <CDropdownItem divider />
         <CDropdownItem
           onClick={() => {
+            dispatch(setCurrentItem(null));
             dispatch(logoutUser());
           }}
         >

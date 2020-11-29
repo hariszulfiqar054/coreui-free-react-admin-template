@@ -105,9 +105,9 @@ const Login = () => {
                                     : false
                                 }
                                 valid={
-                                  !errors.contact && !touched.contact
-                                    ? null
-                                    : true
+                                  !errors.contact && touched.contact
+                                    ? true
+                                    : false
                                 }
                                 type="text"
                                 placeholder="Contact"

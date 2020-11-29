@@ -6,6 +6,9 @@ const Announcements = React.lazy(() =>
   import("./views/pages/announcements/announcements")
 );
 const Profile = React.lazy(() => import("./views/pages/profile/profile"));
+const StockDetail = React.lazy(() =>
+  import("./views/pages/stockDetail/stockDetail")
+);
 
 const Toaster = React.lazy(() =>
   import("./views/notifications/toaster/Toaster")
@@ -51,11 +54,7 @@ const ButtonGroups = React.lazy(() =>
 const Buttons = React.lazy(() => import("./views/buttons/buttons/Buttons"));
 const Charts = React.lazy(() => import("./views/charts/Charts"));
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
-const CoreUIIcons = React.lazy(() =>
-  import("./views/icons/coreui-icons/CoreUIIcons")
-);
-const Flags = React.lazy(() => import("./views/icons/flags/Flags"));
-const Brands = React.lazy(() => import("./views/icons/brands/Brands"));
+
 const Alerts = React.lazy(() => import("./views/notifications/alerts/Alerts"));
 const Badges = React.lazy(() => import("./views/notifications/badges/Badges"));
 const Modals = React.lazy(() => import("./views/notifications/modals/Modals"));
@@ -100,10 +99,6 @@ const routes = [
     component: BrandButtons,
   },
   { path: "/charts", name: "Charts", component: Charts },
-  { path: "/icons", exact: true, name: "Icons", component: CoreUIIcons },
-  { path: "/icons/coreui-icons", name: "CoreUI Icons", component: CoreUIIcons },
-  { path: "/icons/flags", name: "Flags", component: Flags },
-  { path: "/icons/brands", name: "Brands", component: Brands },
   {
     path: "/notifications",
     name: "Notifications",
@@ -145,6 +140,12 @@ const routes = [
     exact: true,
     name: "Announcements",
     component: Announcements,
+  },
+  {
+    path: "/stockDetail",
+    exact: true,
+    name: "Stock Detail",
+    component: StockDetail,
   },
 ];
 

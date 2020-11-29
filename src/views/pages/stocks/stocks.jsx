@@ -4,7 +4,6 @@ import { HiOutlinePlus } from "react-icons/hi";
 import {
   CCard,
   CCardBody,
-  CCardHeader,
   CCol,
   CDataTable,
   CRow,
@@ -26,6 +25,8 @@ import {
 } from "@coreui/react";
 import axios from "axios";
 import { usePaginatedQuery } from "react-query";
+import { setCurrentItem } from "../../../redux/actions/stock.action";
+import { useDispatch } from "react-redux";
 import "./stocks.scss";
 
 const Stocks = () => {
@@ -51,6 +52,8 @@ const Stocks = () => {
   useEffect(() => {
     currentPage !== page && setPage(currentPage);
   }, [currentPage, page]);
+
+  const dispatch = useDispatch();
 
   //Get Stocks Item
   const getStock = async () => {
@@ -366,7 +369,15 @@ const Stocks = () => {
                             >
                               Delete Stock
                             </CButton>
-                            <CButton className="ml-1" size="sm" color="warning">
+                            <CButton
+                              onClick={() => {
+                                history.push("/stockDetail");
+                                dispatch(setCurrentItem(item));
+                              }}
+                              className="ml-1"
+                              size="sm"
+                              color="warning"
+                            >
                               View Item
                             </CButton>
                           </CCardBody>
