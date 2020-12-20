@@ -16,7 +16,6 @@ const AuthReducer = (state = initialState, action) => {
     case Types.LOGOUT_USER: {
       return {
         ...state,
-
         user: null,
         token: null,
       };
@@ -25,6 +24,18 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         token: action?.payload,
+      };
+    }
+    case Types.UPDATE_USER_PIC: {
+      return {
+        ...state,
+        user: { ...state.user, img: action?.payload },
+      };
+    }
+    case Types.UPDATE_USER_INFO: {
+      return {
+        ...state,
+        user: { ...state.user, ...action?.payload },
       };
     }
     default:

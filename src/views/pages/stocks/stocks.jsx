@@ -39,6 +39,7 @@ const Stocks = () => {
   const [addLoading, setaddLoading] = useState(false);
   const [announceTxt, setAnnounceTxt] = useState(null);
   const [itemQty, setItemQty] = useState("");
+  const [price, setPrice] = useState("");
   const [img, setImg] = useState(null);
   const [addAnnErr, setAddAnnErr] = useState(null);
   const [currAnn, setCurrAnn] = useState(null);
@@ -87,19 +88,21 @@ const Stocks = () => {
 
   //Update Item
   const updateItem = async () => {
-    if (!announceTxt && !itemQty) {
+    if (!announceTxt && !itemQty && !price) {
       setAddAnnErr("Fill Atleast one field");
     } else {
       setaddLoading(true);
       const data = {};
       if (announceTxt) data.item_name = announceTxt;
       if (itemQty) data.quantity = Number(itemQty);
+      if (price) data.price = Number(price);
       data.id = currAnn;
       try {
         const response = await axios.put("stocks/updateStocks", data);
         if (response?.data) {
           setAnnounceTxt("");
           setItemQty("");
+          setPrice("");
           setAddStockToggle(false);
           refetch();
         }
@@ -112,7 +115,7 @@ const Stocks = () => {
 
   //Add Item
   const addItem = async () => {
-    if (!announceTxt || !itemQty || !img) {
+    if (!announceTxt || !itemQty || !img || !price) {
       setAddAnnErr("Fill all fields");
     } else if (!/^\d+$/.test(itemQty)) {
       setAddAnnErr("Quantity Should be in numeric");
@@ -123,10 +126,12 @@ const Stocks = () => {
         formBody.append("item_name", announceTxt);
         formBody.append("quantity", Number(itemQty));
         formBody.append("img", img, img?.name);
+        formBody.append("price", Number(price));
         const response = await axios.post("stocks/addItem", formBody);
         if (response?.data) {
           setAnnounceTxt("");
           setItemQty("");
+          setPrice("");
           setImg(null);
           setAddStockToggle(false);
           refetch();
@@ -218,9 +223,22 @@ const Stocks = () => {
                   value={itemQty}
                   onChange={(e) => setItemQty(e.target.value)}
                   placeholder="Enter Item quantity.."
+                  type="number"
                 />
                 <CFormText className="help-block">
                   Please enter item quantity
+                </CFormText>
+              </CFormGroup>
+              <CFormGroup>
+                <CLabel>Price</CLabel>
+                <CInput
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="Enter Item price.."
+                  type="number"
+                />
+                <CFormText className="help-block">
+                  Please enter item price
                 </CFormText>
               </CFormGroup>
             </CForm>
@@ -291,7 +309,6 @@ const Stocks = () => {
                 <CDataTable
                   items={resolvedData?.data}
                   tableFilter
-                  columnFilter
                   fields={[
                     { key: "_id", _classes: "font-weight-bold" },
                     {
@@ -304,6 +321,7 @@ const Stocks = () => {
                       label: "Quantity",
                       _classes: "text-center",
                     },
+                    { key: "price", label: "Price Per Unit", _classes: "text-center" },
                     { key: "city", label: "City", _classes: "text-center" },
 
                     {

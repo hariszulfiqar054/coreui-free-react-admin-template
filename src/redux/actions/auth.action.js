@@ -19,3 +19,17 @@ export const setToken = (token) => {
     payload: token,
   };
 };
+
+export const updatePic = (payload) => {
+  return {
+    type: Types.UPDATE_USER_PIC,
+    payload,
+  };
+};
+
+export const updateInfo = (payload) => {
+  return {
+    type: Types.UPDATE_USER_INFO,
+    payload,
+  };
+};

@@ -252,7 +252,6 @@ const Announcements = () => {
                 <CDataTable
                   items={resolvedData?.data}
                   tableFilter
-                  columnFilter
                   fields={[
                     { key: "_id", _classes: "font-weight-bold text-center" },
                     {

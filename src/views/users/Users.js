@@ -323,7 +323,6 @@ const Users = () => {
                 <CDataTable
                   items={data}
                   tableFilter
-                  columnFilter
                   fields={[
                     { key: "_id", label: "ID", _classes: "font-weight-bold" },
                     { key: "name", label: "Name", _classes: "text-center" },
