@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   CButton,
@@ -16,7 +16,12 @@ import {
   CSpinner,
   CAlert,
   CValidFeedback,
+  CModal,
   CInvalidFeedback,
+  CModalBody,
+  CModalHeader,
+  CModalTitle,
+  CModalFooter,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Formik } from "formik";
@@ -27,31 +32,109 @@ import { useDispatch } from "react-redux";
 import { setUser, setToken } from "../../../redux/actions/auth.action";
 import { useHistory } from "react-router-dom";
 import Roles from "../../../constants/roles";
+import firebase from "../../../config/firebaseConfig";
 
 const Login = () => {
   const history = useHistory();
+  const [shared, setShared] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(null);
+  const [showForget, setShowForget] = useState(false);
+  const [contact, setContact] = useState("+92");
+  const [contactErr, setContactErr] = useState("");
+  const [showCode, setShowCode] = useState(false);
+  const [code, setCode] = useState("");
+  const [fogetLoader, setForgetLoader] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {}, []);
+
+  const onForgetHandler = async () => {
+    if (contact?.length > 3) {
+      try {
+        const recaptcha = new firebase.auth.RecaptchaVerifier("recaptcha", {
+          size: "invisible",
+        });
+        const firebaseRes = await firebase
+          .auth()
+          .signInWithPhoneNumber(contact, recaptcha);
+        if (firebaseRes) {
+          setShowCode(true);
+          setShared(firebaseRes);
+        }
+      } catch (error) {
+        setContact("+92");
+        setContactErr(error?.message);
+        setTimeout(() => setContactErr(""), 2000);
+      }
+
+      // .then((data) => {
+      //   let code = prompt("Enter otp", "");
+      //   if (code == null) return;
+      //   data
+      //     .confirm(code)
+      //     .then((result) => {
+      //       console.log("User Verfied");
+      //     })
+      //     .catch((e) => setContactErr("User not verified"));
+      // });
+    } else {
+      setContactErr("Please Enter The Valid Contact Number");
+      setTimeout(() => setContactErr(""), 2000);
+    }
+  };
+  const codeHandler = async () => {
+    setForgetLoader(true);
+    try {
+      const codeResponse = await shared.confirm(code);
+      if (codeResponse) {
+        const response = await axios.post("user/forgetPassword", {
+          contact: contact,
+        });
+        if (response?.data) {
+          console.log(response?.data);
+          if (response?.data?.data?.role == Roles.TEAM_LEADER) {
+            dispatch(setUser(response.data?.data));
+            dispatch(setToken(response?.data?.token));
+            history.replace("/");
+            setLoading(false);
+          } else {
+            showForget(false);
+            setError("You are unauthorized");
+          }
+        }
+      }
+    } catch (error) {
+      setCode("");
+      setShowCode(false);
+      setError("Invalid Verification Code");
+      setTimeout(() => setError(""), 2000);
+      setContact("+92");
+      setShowForget(false);
+    }
+    setForgetLoader(false);
+  };
 
   const loginHandler = async ({ contact, password }) => {
     setLoading(true);
     try {
       const response = await axios.post("user/login", { contact, password });
       if (response?.data) {
-        dispatch(setUser(response.data?.data));
-        dispatch(setToken(response?.data?.token));
+        if (response?.data?.data?.role == Roles.TEAM_LEADER) {
+          dispatch(setUser(response.data?.data));
+          dispatch(setToken(response?.data?.token));
 
-        setLoading(false);
-        if (response?.data?.data?.role == Roles.TEAM_LEADER)
           history.replace("/");
-        else setError("You are unauthorized");
+
+          setLoading(false);
+        } else setError("You are unauthorized");
       }
     } catch (error) {
       setError(error?.response?.data?.message);
     }
     setLoading(false);
   };
+
   return (
     <div>
       {isError ? (
@@ -59,6 +142,64 @@ const Login = () => {
           {isError}
         </CAlert>
       ) : null}
+      <CModal color="primary" show={showForget} size="md">
+        <CModalHeader closeButton>
+          <CModalTitle>
+            {showCode ? "Verification Code" : "Account Recovery"}
+          </CModalTitle>
+        </CModalHeader>
+        {contactErr && (
+          <CAlert style={{ textAlign: "center" }} color="danger">
+            {contactErr}
+          </CAlert>
+        )}
+        <CModalBody>
+          <CInputGroup>
+            <CInputGroupPrepend>
+              <CInputGroupText>
+                {showCode ? <CIcon name="cil-lock-locked" /> : <AiFillPhone />}
+              </CInputGroupText>
+            </CInputGroupPrepend>
+            {showCode ? (
+              <CInput
+                placeholder="Enter Your Verification Code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+            ) : (
+              <CInput
+                placeholder="Enter Your Contact"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+              />
+            )}
+          </CInputGroup>
+        </CModalBody>
+        {fogetLoader ? (
+          <div
+            className="mb-3"
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <CSpinner />
+          </div>
+        ) : (
+          <CModalFooter>
+            <CButton
+              onClick={showCode ? codeHandler : onForgetHandler}
+              color="primary"
+            >
+              Confirm
+            </CButton>
+            <CButton onClick={() => setShowForget(false)} color="secondary">
+              Cancel
+            </CButton>
+          </CModalFooter>
+        )}
+      </CModal>
       <div className="c-app c-default-layout flex-row align-items-center">
         <CContainer>
           <CRow className="justify-content-center">
@@ -89,6 +230,7 @@ const Login = () => {
                         values,
                       }) => (
                         <CForm>
+                          <div id="recaptcha"></div>
                           <h1>Login</h1>
                           <p className="text-muted">Sign In to your account</p>
                           <div className="mb-3">
@@ -167,7 +309,11 @@ const Login = () => {
                               )}
                             </CCol>
                             <CCol xs="6" className="text-right">
-                              <CButton color="link" className="px-0">
+                              <CButton
+                                onClick={() => setShowForget(!showForget)}
+                                color="link"
+                                className="px-0"
+                              >
                                 Forgot password?
                               </CButton>
                             </CCol>
