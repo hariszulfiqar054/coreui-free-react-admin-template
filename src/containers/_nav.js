@@ -2,7 +2,11 @@ import React from "react";
 import CIcon from "@coreui/icons-react";
 import { BiMapPin } from "react-icons/bi";
 import { AiOutlineStock } from "react-icons/ai";
-import { BsFillPeopleFill, BsFillPersonFill } from "react-icons/bs";
+import {
+  BsFillPeopleFill,
+  BsFillPersonFill,
+  BsChatDotsFill,
+} from "react-icons/bs";
 import { HiSpeakerphone } from "react-icons/hi";
 
 export default [
@@ -35,6 +39,12 @@ export default [
     name: "Announcements",
     to: "/announcements",
     icon: <HiSpeakerphone className="c-sidebar-nav-icon" />,
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Chat",
+    to: "/chat",
+    icon: <BsChatDotsFill className="c-sidebar-nav-icon" />,
   },
   {
     _tag: "CSidebarNavItem",

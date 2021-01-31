@@ -1,5 +1,6 @@
 import React from "react";
 
+const Chat = React.lazy(() => import("./views/chat/chat"));
 const TrackUser = React.lazy(() => import("./views/pages/trackuser/trackuser"));
 const Stocks = React.lazy(() => import("./views/pages/stocks/stocks"));
 const Announcements = React.lazy(() =>
@@ -146,6 +147,12 @@ const routes = [
     exact: true,
     name: "Stock Detail",
     component: StockDetail,
+  },
+  {
+    path: "/chat",
+    exact: true,
+    name: "Chat",
+    component: Chat,
   },
 ];
 

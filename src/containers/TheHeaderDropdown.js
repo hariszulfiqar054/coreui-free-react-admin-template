@@ -10,29 +10,31 @@ import {
 import CIcon from "@coreui/icons-react";
 import { logoutUser } from "../redux/actions/auth.action";
 import { setCurrentItem } from "../redux/actions/stock.action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const TheHeaderDropdown = () => {
+  const user = useSelector((state) => state.auth);
+  const history = useHistory();
   const dispatch = useDispatch();
+
   return (
     <CDropdown inNav className="c-header-nav-items mx-2" direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
           <CImg
-            src={"avatars/6.jpg"}
+            src={
+              user?.user?.img ||
+              "https://png.pngitem.com/pimgs/s/130-1300400_user-hd-png-download.png"
+            }
             className="c-avatar-img"
-            alt="admin@bootstrapmaster.com"
           />
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem>
+        <CDropdownItem onClick={() => history.push("profile")}>
           <CIcon name="cil-user" className="mfe-2" />
           Profile
-        </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-settings" className="mfe-2" />
-          Settings
         </CDropdownItem>
 
         <CDropdownItem divider />
