@@ -59,6 +59,7 @@ const Stocks = () => {
   //Get Stocks Item
   const getStock = async () => {
     const response = await axios.get(`stocks/allStocks?page=${page}&limit=5`);
+    console.log(response?.data);
     return response?.data;
   };
 
@@ -321,7 +322,11 @@ const Stocks = () => {
                       label: "Quantity",
                       _classes: "text-center",
                     },
-                    { key: "price", label: "Price Per Unit", _classes: "text-center" },
+                    {
+                      key: "price",
+                      label: "Price Per Unit",
+                      _classes: "text-center",
+                    },
                     { key: "city", label: "City", _classes: "text-center" },
 
                     {
