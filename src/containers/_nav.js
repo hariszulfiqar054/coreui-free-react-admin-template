@@ -8,6 +8,7 @@ import {
   BsChatDotsFill,
 } from "react-icons/bs";
 import { HiSpeakerphone } from "react-icons/hi";
+import { RiFileListFill } from "react-icons/ri";
 
 export default [
   {
@@ -39,6 +40,12 @@ export default [
     name: "Announcements",
     to: "/announcements",
     icon: <HiSpeakerphone className="c-sidebar-nav-icon" />,
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Orders",
+    to: "/order",
+    icon: <RiFileListFill className="c-sidebar-nav-icon" />,
   },
   {
     _tag: "CSidebarNavItem",

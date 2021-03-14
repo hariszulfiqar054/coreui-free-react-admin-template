@@ -6,6 +6,7 @@ const Stocks = React.lazy(() => import("./views/pages/stocks/stocks"));
 const Announcements = React.lazy(() =>
   import("./views/pages/announcements/announcements")
 );
+const Orders = React.lazy(() => import("./views/pages/order/orderPage"));
 const Profile = React.lazy(() => import("./views/pages/profile/profile"));
 const StockDetail = React.lazy(() =>
   import("./views/pages/stockDetail/stockDetail")
@@ -153,6 +154,12 @@ const routes = [
     exact: true,
     name: "Chat",
     component: Chat,
+  },
+  {
+    path: "/order",
+    exact: true,
+    name: "Order",
+    component: Orders,
   },
 ];
 

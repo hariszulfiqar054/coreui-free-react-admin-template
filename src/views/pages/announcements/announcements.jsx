@@ -24,7 +24,7 @@ import {
 } from "@coreui/react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { usePaginatedQuery } from "react-query";
+import { useQuery } from "react-query";
 import "./announcements.scss";
 
 const Announcements = () => {
@@ -59,7 +59,7 @@ const Announcements = () => {
     return response?.data;
   };
 
-  const { status, resolvedData, refetch } = usePaginatedQuery(
+  const { status, data, refetch } = useQuery(
     ["announcement", page],
     getAnnouncement
   );
@@ -251,7 +251,7 @@ const Announcements = () => {
               <hr />
               <CCardBody>
                 <CDataTable
-                  items={resolvedData?.data}
+                  items={data?.data}
                   tableFilter
                   fields={[
                     { key: "_id", _classes: "font-weight-bold text-center" },
@@ -277,7 +277,7 @@ const Announcements = () => {
                   ]}
                   hover
                   striped
-                  itemsPerPage={resolvedData?.data?.length}
+                  itemsPerPage={data?.data?.length}
                   activePage={page}
                   pagination
                   // clickableRows
@@ -339,7 +339,7 @@ const Announcements = () => {
                 <CPagination
                   activePage={page}
                   onActivePageChange={pageChange}
-                  pages={resolvedData?.total_pages}
+                  pages={data?.total_pages}
                   doubleArrows={false}
                   align="center"
                 />

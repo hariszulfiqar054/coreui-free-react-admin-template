@@ -24,7 +24,7 @@ import {
   CAlert,
 } from "@coreui/react";
 import axios from "axios";
-import { usePaginatedQuery } from "react-query";
+import { useQuery } from "react-query";
 import { setCurrentItem } from "../../../redux/actions/stock.action";
 import { useDispatch } from "react-redux";
 import "./stocks.scss";
@@ -59,14 +59,11 @@ const Stocks = () => {
   //Get Stocks Item
   const getStock = async () => {
     const response = await axios.get(`stocks/allStocks?page=${page}&limit=5`);
-    console.log(response?.data);
+
     return response?.data;
   };
 
-  const { status, resolvedData, refetch } = usePaginatedQuery(
-    ["stock", page],
-    getStock
-  );
+  const { status, data, refetch } = useQuery(["stock", page], getStock);
 
   //Delete Item
   const deleteItem = async () => {
@@ -308,7 +305,7 @@ const Stocks = () => {
               <hr />
               <CCardBody>
                 <CDataTable
-                  items={resolvedData?.data}
+                  items={data?.data}
                   tableFilter
                   fields={[
                     { key: "_id", _classes: "font-weight-bold" },
@@ -341,7 +338,7 @@ const Stocks = () => {
                   striped
                   activePage={page}
                   pagination
-                  itemsPerPage={resolvedData?.data?.length}
+                  itemsPerPage={data?.data?.length}
                   // clickableRows
                   scopedSlots={{
                     show_details: (item, index) => {
@@ -413,7 +410,7 @@ const Stocks = () => {
                 <CPagination
                   activePage={page}
                   onActivePageChange={pageChange}
-                  pages={resolvedData?.total_pages}
+                  pages={data?.total_pages}
                   doubleArrows={false}
                   align="center"
                 />
