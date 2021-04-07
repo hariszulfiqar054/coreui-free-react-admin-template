@@ -70,6 +70,44 @@ const OrderPage = () => {
     setLoading(false);
   };
 
+  const acceptOrder = async (id) => {
+    setLoading(true);
+    try {
+      const response = await axios.put("order/approveOrder", { id });
+      if (response?.data) {
+        setStatus({ success: response?.data?.message, error: "" });
+      }
+      setTimeout(() => setStatus({ success: "", error: "" }), 3000);
+      setShowModel(false);
+    } catch (error) {
+      setStatus({
+        success: "",
+        error: error?.response?.data?.message || error.message,
+      });
+      setTimeout(() => setStatus({ success: "", error: "" }), 3000);
+    }
+    setLoading(false);
+  };
+
+  const completeOrder = async (id) => {
+    setLoading(true);
+    try {
+      const response = await axios.put("order/completeOrder", { id });
+      if (response?.data) {
+        setStatus({ success: response?.data?.message, error: "" });
+      }
+      setTimeout(() => setStatus({ success: "", error: "" }), 3000);
+      setShowModel(false);
+    } catch (error) {
+      setStatus({
+        success: "",
+        error: error?.response?.data?.message || error.message,
+      });
+      setTimeout(() => setStatus({ success: "", error: "" }), 3000);
+    }
+    setLoading(false);
+  };
+
   return (
     <div>
       {apiStatus.success || apiStatus.error ? (
@@ -87,7 +125,7 @@ const OrderPage = () => {
           modelInfo == orderStatus.cancel
             ? "danger"
             : modelInfo == orderStatus.accept
-            ? "primay"
+            ? "primary"
             : "success"
         }
       >
@@ -123,12 +161,20 @@ const OrderPage = () => {
                 modelInfo == orderStatus.cancel
                   ? "danger"
                   : modelInfo == orderStatus.accept
-                  ? "primay"
+                  ? "primary"
                   : "success"
               }
               onClick={() => {
-                cancelOrder(selectedOrder);
-                refetch();
+                if (modelInfo == orderStatus.cancel) {
+                  cancelOrder(selectedOrder);
+                  refetch();
+                } else if (modelInfo == orderStatus.accept) {
+                  acceptOrder(selectedOrder);
+                  refetch();
+                } else {
+                  completeOrder(selectedOrder);
+                  refetch();
+                }
               }}
             >
               {modelInfo == orderStatus.cancel
@@ -231,11 +277,14 @@ const OrderPage = () => {
                         >
                           <CCardBody>
                             {item?.status === orderStatus.completed ||
-                            item?.status === orderStatus.cancel ? null : (
+                            item?.status === orderStatus.cancel ||
+                            item?.status === orderStatus.accept ? null : (
                               <>
                                 <CButton
                                   onClick={() => {
-                                    console.log(item?.status);
+                                    setSelectedOrder(item?._id);
+                                    setModelInfo(orderStatus.accept);
+                                    setShowModel(true);
                                   }}
                                   size="sm"
                                   color="info"
@@ -256,6 +305,19 @@ const OrderPage = () => {
                                 </CButton>
                               </>
                             )}
+                            {item?.status === orderStatus.accept ? (
+                              <CButton
+                                onClick={() => {
+                                  setSelectedOrder(item?._id);
+                                  setModelInfo(orderStatus.completed);
+                                  setShowModel(true);
+                                }}
+                                size="sm"
+                                color="success"
+                              >
+                                Complete Order
+                              </CButton>
+                            ) : null}
 
                             <CButton
                               onClick={() => {
