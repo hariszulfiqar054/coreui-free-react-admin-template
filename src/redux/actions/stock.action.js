@@ -5,3 +5,10 @@ export const setCurrentItem = (data) => {
     payload: data,
   };
 };
+
+export const setCurrentOrder = (payload) => {
+  return {
+    type: Types.SET_CURRENT_ORDER,
+    payload,
+  };
+};

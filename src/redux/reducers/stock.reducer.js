@@ -2,6 +2,7 @@ import * as Types from "../action.types";
 
 const initialState = {
   currentItem: null,
+  cuurentOrder: null,
 };
 
 const StockReducer = (state = initialState, action) => {
@@ -12,9 +13,14 @@ const StockReducer = (state = initialState, action) => {
         currentItem: action.payload,
       };
     }
-
+    case Types.SET_CURRENT_ORDER: {
+      return {
+        ...state,
+        cuurentOrder: action?.payload,
+      };
+    }
     default:
-      return state;
+      return { ...state };
   }
 };
 

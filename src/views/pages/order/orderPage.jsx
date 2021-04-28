@@ -22,9 +22,12 @@ import {
 import "./user.scss";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { useDispatch } from "react-redux";
+import { setCurrentOrder } from "../../../redux/actions/stock.action";
 import orderStatus from "../../../constants/orderStatus";
 
 const OrderPage = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const queryPage = useLocation().search.match(/page=([0-9]+)/, "");
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
@@ -321,6 +324,7 @@ const OrderPage = () => {
 
                             <CButton
                               onClick={() => {
+                                dispatch(setCurrentOrder(item));
                                 history.push("/orderDetail");
                               }}
                               className="ml-1"

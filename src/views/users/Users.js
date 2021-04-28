@@ -151,7 +151,7 @@ const Users = () => {
         <Formik
           initialValues={{
             name: "",
-            contact: "",
+            contact: "+92",
             password: "",
           }}
           validationSchema={
@@ -160,9 +160,9 @@ const Users = () => {
               name: Yup.string().required("Required"),
               contact: Yup.string()
                 .required("Required")
-                .matches(/^\d+$/, "Only digits are allowed")
-                .min(11, "Contact length should be 11 digits")
-                .max(11, "Contact length should be 11 digits"),
+                .matches(/^[\d ()+]+$/, "Only digits are allowed")
+                .min(13, "Contact length should be 11 digits")
+                .max(13, "Contact length should be 11 digits"),
 
               password: Yup.string().required("Required"),
             })
