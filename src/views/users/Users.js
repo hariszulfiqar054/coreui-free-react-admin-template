@@ -23,14 +23,16 @@ import {
   CHeader,
   CAlert,
 } from "@coreui/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { HiOutlinePlus } from "react-icons/hi";
 import "./user.scss";
 import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { setSelectedSalesman } from "../../redux/actions/stock.action";
 
 const Users = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [toggleMenu, setToggleMenu] = useState(null);
   const [addSalesmanLoading, setAddSalesmanLoading] = useState(false);
@@ -403,6 +405,17 @@ const Users = () => {
                               className="ml-1"
                             >
                               Delete Salesman
+                            </CButton>
+                            <CButton
+                              onClick={() => {
+                                dispatch(setSelectedSalesman(item));
+                                history.push("/salesmanInfo");
+                              }}
+                              size="sm"
+                              color="warning"
+                              className="ml-1"
+                            >
+                              View Salesman Information
                             </CButton>
                           </CCardBody>
                         </CCollapse>

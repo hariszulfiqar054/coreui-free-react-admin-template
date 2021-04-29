@@ -3,6 +3,7 @@ import * as Types from "../action.types";
 const initialState = {
   currentItem: null,
   cuurentOrder: null,
+  selectedSalesman: null,
 };
 
 const StockReducer = (state = initialState, action) => {
@@ -17,6 +18,12 @@ const StockReducer = (state = initialState, action) => {
       return {
         ...state,
         cuurentOrder: action?.payload,
+      };
+    }
+    case Types.SET_SELECTED_SALESMAN: {
+      return {
+        ...state,
+        selectedSalesman: action?.payload,
       };
     }
     default:

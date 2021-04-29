@@ -12,3 +12,10 @@ export const setCurrentOrder = (payload) => {
     payload,
   };
 };
+
+export const setSelectedSalesman = (payload) => {
+  return {
+    type: Types.SET_SELECTED_SALESMAN,
+    payload,
+  };
+};
