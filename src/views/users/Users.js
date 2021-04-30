@@ -30,6 +30,7 @@ import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { setSelectedSalesman } from "../../redux/actions/stock.action";
+import roles from "src/constants/roles";
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -96,6 +97,7 @@ const Users = () => {
       if (password) data.password = password;
       if (contact) data.contact = contact;
       data.id = updateUser?._id;
+      data.role = roles.SALES_MAN;
       setAddSalesmanLoading(true);
       try {
         const response = await axios.put("user/updatesalesman", data);

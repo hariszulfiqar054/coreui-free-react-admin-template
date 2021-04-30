@@ -44,7 +44,8 @@ const OrderPage = () => {
   };
 
   const getOrders = async () => {
-    const response = await axios.get("order/orderByCities?page=" + page);
+    const response = await axios.get("order/orderByCities?page" + page);
+    console.log(response?.data);
     return response.data;
   };
 
@@ -229,6 +230,11 @@ const OrderPage = () => {
                     {
                       key: "status",
                       label: "Order Status",
+                      _classes: "font-weight-bold",
+                    },
+                    {
+                      key: "shopName",
+                      label: "Shop Name",
                       _classes: "font-weight-bold",
                     },
                     {

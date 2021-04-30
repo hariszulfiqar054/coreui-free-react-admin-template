@@ -209,7 +209,7 @@ const Login = () => {
                   <CCardBody>
                     <Formik
                       initialValues={{
-                        contact: "",
+                        contact: "+92",
                         password: "",
                       }}
                       validationSchema={Yup.object({

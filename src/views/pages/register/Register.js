@@ -75,7 +75,7 @@ const Register = () => {
                   <Formik
                     initialValues={{
                       name: "",
-                      contact: "",
+                      contact: "+92",
                       password: "",
                       confirm_password: "",
                     }}
@@ -83,9 +83,10 @@ const Register = () => {
                       name: Yup.string().required("Required"),
                       contact: Yup.string()
                         .required("Required")
-                        .matches(/^\d+$/, "Only digits are allowed")
-                        .max(11, "Length should be 11 digit")
-                        .min(11, "Length should be 11 digit"),
+                        .matches(/^[\d ()+]+$/, "Only digits are allowed")
+                        .min(13, "Contact length should be 11 digits")
+                        .max(13, "Contact length should be 11 digits"),
+
                       password: Yup.string()
                         .required("Required")
                         .min(5, "Password should be minimum lenght of 5"),
