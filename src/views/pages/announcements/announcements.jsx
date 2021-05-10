@@ -53,7 +53,9 @@ const Announcements = () => {
   //Get Announcements
   const getAnnouncement = async () => {
     const response = await axios.get(
-      `announcements/getannouncements/${city}?page=${page}&limit=10`
+      `announcements/getannouncements/${city}?page=${
+        page > 0 ? page : 1
+      }&limit=10`
     );
 
     return response?.data;

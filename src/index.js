@@ -5,7 +5,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { QueryClientProvider, QueryClient } from "react-query";
+import { useQuery, QueryClient, QueryClientProvider } from "react-query";
 
 import { icons } from "./assets/icons";
 
@@ -15,9 +15,9 @@ import { PersistGate } from "redux-persist/integration/react";
 
 React.icons = icons;
 
-const client = new QueryClient();
+const queryClient = new QueryClient();
 ReactDOM.render(
-  <QueryClientProvider client={client}>
+  <QueryClientProvider client={queryClient}>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <App />

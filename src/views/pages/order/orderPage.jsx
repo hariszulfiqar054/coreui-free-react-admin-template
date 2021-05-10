@@ -44,12 +44,15 @@ const OrderPage = () => {
   };
 
   const getOrders = async () => {
-    const response = await axios.get("order/orderByCities?page" + page);
-    console.log(response?.data);
+    const response = await axios.get(
+      `order/orderByCities?page"${page > 0 ? page : 1}`
+    );
+
     return response.data;
   };
 
   const { status, refetch, data } = useQuery(["order", page], getOrders);
+  console.log(status);
 
   useEffect(() => {
     currentPage !== page && setPage(currentPage);
@@ -61,6 +64,7 @@ const OrderPage = () => {
       const response = await axios.put("order/cancelOrder", { id });
       if (response?.data) {
         setStatus({ success: response?.data?.message, error: "" });
+        refetch();
       }
       setTimeout(() => setStatus({ success: "", error: "" }), 3000);
       setShowModel(false);
@@ -80,6 +84,7 @@ const OrderPage = () => {
       const response = await axios.put("order/approveOrder", { id });
       if (response?.data) {
         setStatus({ success: response?.data?.message, error: "" });
+        refetch();
       }
       setTimeout(() => setStatus({ success: "", error: "" }), 3000);
       setShowModel(false);
@@ -99,6 +104,7 @@ const OrderPage = () => {
       const response = await axios.put("order/completeOrder", { id });
       if (response?.data) {
         setStatus({ success: response?.data?.message, error: "" });
+        refetch();
       }
       setTimeout(() => setStatus({ success: "", error: "" }), 3000);
       setShowModel(false);

@@ -58,7 +58,9 @@ const Stocks = () => {
 
   //Get Stocks Item
   const getStock = async () => {
-    const response = await axios.get(`stocks/allStocks?page=${page}&limit=5`);
+    const response = await axios.get(
+      `stocks/allStocks?page=${page > 0 ? page : 1}&limit=5`
+    );
 
     return response?.data;
   };
