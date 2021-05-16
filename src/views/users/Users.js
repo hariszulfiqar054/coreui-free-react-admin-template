@@ -99,14 +99,19 @@ const Users = () => {
       data.id = updateUser?._id;
       data.role = roles.SALES_MAN;
       setAddSalesmanLoading(true);
+
       try {
-        const response = await axios.put("user/updatesalesman", data);
-        if (response?.data) {
-          refetch();
-          setAddStockToggle(false);
+        if (data?.contact?.length < 13) {
+          alert("Invalid Contact");
+        } else {
+          const response = await axios.put("user/updatesalesman", data);
+          if (response?.data) {
+            refetch();
+            setAddStockToggle(false);
+          }
         }
       } catch (error) {
-        setaddSalesmanErr("Error while updating salesman information");
+        setaddSalesmanErr(error?.response?.data?.message);
       }
       setAddSalesmanLoading(false);
     }
@@ -165,14 +170,15 @@ const Users = () => {
               contact: Yup.string()
                 .required("Required")
                 .matches(/^[\d ()+]+$/, "Only digits are allowed")
-                .min(13, "Contact length should be 11 digits")
-                .max(13, "Contact length should be 11 digits"),
+                .min(13, "Contact length should be 13 digits")
+                .max(13, "Contact length should be 13 digits"),
 
               password: Yup.string().required("Required"),
             })
           }
-          onSubmit={(values, formikActions) => {
+          onSubmit={(values, { resetForm }) => {
             addSalesman(values);
+            resetForm();
           }}
         >
           {({
@@ -335,8 +341,7 @@ const Users = () => {
                       label: "Contact",
                       _classes: "text-center",
                     },
-                    { key: "role", label: "Role", _classes: "text-center" },
-                    { key: "city", label: "City", _classes: "text-center" },
+
                     {
                       key: "password",
                       label: "Password",
@@ -390,6 +395,7 @@ const Users = () => {
                               size="sm"
                               color="info"
                               onClick={() => {
+                                console.log(item);
                                 setActionType(null);
                                 setUpdateUser(item);
                                 setAddStockToggle(true);

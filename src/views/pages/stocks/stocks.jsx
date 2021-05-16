@@ -46,6 +46,7 @@ const Stocks = () => {
   const [delErr, setDelErr] = useState(null);
   const [delModel, setDelModel] = useState(false);
   const [actionType, setActionType] = useState();
+  const [resetInput, setResetInput] = useState(true);
   const pageChange = (newPage) => {
     currentPage !== newPage && history.push(`/stocks?page=${newPage}`);
   };
@@ -69,7 +70,6 @@ const Stocks = () => {
 
   //Delete Item
   const deleteItem = async () => {
-    console.log(currAnn);
     setaddLoading(true);
     try {
       const response = await axios.delete("stocks/deleteStock", {
@@ -104,6 +104,7 @@ const Stocks = () => {
           setItemQty("");
           setPrice("");
           setAddStockToggle(false);
+          setResetInput((t) => !t);
           refetch();
         }
       } catch (error) {
@@ -132,8 +133,9 @@ const Stocks = () => {
           setAnnounceTxt("");
           setItemQty("");
           setPrice("");
-          setImg(null);
+          setImg("");
           setAddStockToggle(false);
+          setResetInput((t) => !t);
           refetch();
         }
       } catch (error) {
@@ -211,6 +213,7 @@ const Stocks = () => {
                   <div style={{ display: "flex", flexDirection: "column" }}>
                     <CLabel>Item Image</CLabel>
                     <input
+                      key={resetInput}
                       type="file"
                       onChange={(e) => setImg(e.target.files[0])}
                     />
@@ -308,25 +311,32 @@ const Stocks = () => {
               <CCardBody>
                 <CDataTable
                   items={data?.data}
-                  tableFilter
+                  columnFilter
                   fields={[
-                    { key: "_id", _classes: "font-weight-bold" },
+                    { key: "_id", _classes: "font-weight-bold", filter: false },
                     {
                       key: "item_name",
                       label: "Item Name",
                       _classes: "font-weight-bold text-uppercase text-center",
+                      filter: true,
                     },
                     {
                       key: "quantity",
                       label: "Quantity",
                       _classes: "text-center",
+                      filter: false,
                     },
                     {
                       key: "price",
                       label: "Price Per Unit",
                       _classes: "text-center",
                     },
-                    { key: "city", label: "City", _classes: "text-center" },
+                    {
+                      key: "city",
+                      label: "City",
+                      _classes: "text-center",
+                      filter: false,
+                    },
 
                     {
                       key: "show_details",
