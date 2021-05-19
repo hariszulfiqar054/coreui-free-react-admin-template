@@ -18,6 +18,11 @@ import {
   CAlert,
   CSpinner,
   CInvalidFeedback,
+  CModal,
+  CModalBody,
+  CModalHeader,
+  CModalTitle,
+  CModalFooter,
   CValidFeedback,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
@@ -26,6 +31,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import firebase from "../../../config/firebaseConfig";
 
 const Register = () => {
   const history = useHistory();
@@ -33,24 +39,72 @@ const Register = () => {
   const [isSubmittedPress, setIsSubmittedPressed] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(null);
+  const [contact, setContact] = useState("+92");
+  const [contactErr, setContactErr] = useState("");
+  const [showCode, setShowCode] = useState(false);
+  const [code, setCode] = useState("");
+  const [fogetLoader, setForgetLoader] = useState(false);
+  const [shared, setShared] = useState(null);
+  const [showForget, setShowForget] = useState(false);
+  const [formvalues, setFormValues] = useState(null);
 
   const signupHandler = async ({ name, contact, password }) => {
     setLoading(true);
+    setForgetLoader(true);
     try {
-      const response = await axios.post("user/teamleaderSignup", {
-        name,
-        contact,
-        password,
-        city,
-      });
-      if (response?.data) {
-        setLoading(false);
-        history.push("/login");
+      const codeResponse = await shared.confirm(code);
+      if (codeResponse) {
+        const response = await axios.post("user/teamleaderSignup", {
+          name: name ? name : formvalues?.name,
+          contact: contact ? contact : formvalues?.contact,
+          password: password ? password : formvalues?.password,
+          city,
+        });
+        if (response?.data) {
+          setShowForget(false);
+          setLoading(false);
+          setError("Sign Up Sucess");
+          setTimeout(() => {
+            setError("");
+            history.push("/login");
+          }, 2000);
+        }
       }
     } catch (error) {
       setError(error?.response?.data?.message);
+      setCode("");
+      setShowCode(false);
+      setError("Invalid Verification Code");
+      setTimeout(() => setError(""), 2000);
+      setContact("+92");
+      setShowForget(false);
     }
     setLoading(false);
+    setForgetLoader(false);
+  };
+
+  const onForgetHandler = async () => {
+    if (contact?.length > 3) {
+      try {
+        const recaptcha = new firebase.auth.RecaptchaVerifier("recaptcha", {
+          size: "invisible",
+        });
+        const firebaseRes = await firebase
+          .auth()
+          .signInWithPhoneNumber(contact, recaptcha);
+        if (firebaseRes) {
+          setShowCode(true);
+          setShared(firebaseRes);
+        }
+      } catch (error) {
+        setContact("+92");
+        setContactErr(error?.message);
+        setTimeout(() => setContactErr(""), 2000);
+      }
+    } else {
+      setContactErr("Please Enter The Valid Contact Number");
+      setTimeout(() => setContactErr(""), 2000);
+    }
   };
 
   return (
@@ -61,11 +115,72 @@ const Register = () => {
         </CAlert>
       )}
       {isError && (
-        <CAlert style={{ textAlign: "center" }} color="danger">
+        <CAlert
+          style={{ textAlign: "center" }}
+          color={isError?.includes("Sign Up Sucess") ? "success" : "danger"}
+        >
           {isError}
         </CAlert>
       )}
 
+      <CModal color="primary" show={showForget} size="md">
+        <CModalHeader closeButton>
+          <CModalTitle>
+            {showCode ? "Verification Code" : "Account Recovery"}
+          </CModalTitle>
+        </CModalHeader>
+        {contactErr && (
+          <CAlert style={{ textAlign: "center" }} color="danger">
+            {contactErr}
+          </CAlert>
+        )}
+        <CModalBody>
+          <CInputGroup>
+            <CInputGroupPrepend>
+              <CInputGroupText>
+                {showCode ? <CIcon name="cil-lock-locked" /> : <AiFillPhone />}
+              </CInputGroupText>
+            </CInputGroupPrepend>
+            {showCode ? (
+              <CInput
+                placeholder="Enter Your Verification Code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+            ) : (
+              <CInput
+                placeholder="Enter Your Contact"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+              />
+            )}
+          </CInputGroup>
+        </CModalBody>
+        {fogetLoader ? (
+          <div
+            className="mb-3"
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <CSpinner />
+          </div>
+        ) : (
+          <CModalFooter>
+            <CButton
+              onClick={showCode ? signupHandler : onForgetHandler}
+              color="primary"
+            >
+              Confirm
+            </CButton>
+            <CButton onClick={() => setShowForget(false)} color="secondary">
+              Cancel
+            </CButton>
+          </CModalFooter>
+        )}
+      </CModal>
       <div className="c-app c-default-layout flex-row align-items-center">
         <CContainer>
           <CRow className="justify-content-center">
@@ -98,7 +213,9 @@ const Register = () => {
                         ? setIsSubmittedPressed(false)
                         : setIsSubmittedPressed(true);
                       if (city) {
-                        signupHandler(values);
+                        setFormValues(values);
+                        setShowForget(!showForget);
+                        setContact(values.contact);
                       }
                     }}
                   >
@@ -111,6 +228,7 @@ const Register = () => {
                       values,
                     }) => (
                       <CForm>
+                        <div id="recaptcha"></div>
                         <h1>Register</h1>
                         <p className="text-muted">Create your account</p>
                         <div className="mb-3">

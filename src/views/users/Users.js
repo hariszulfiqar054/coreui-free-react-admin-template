@@ -89,20 +89,24 @@ const Users = () => {
         error?.response?.data?.message?.includes("number")
           ? setaddSalesmanErr("Salesman with this number already exist.")
           : setaddSalesmanErr("Unable to add salesman.");
+
+        setTimeout(() => setaddSalesmanErr(""), 2000);
       }
       setAddSalesmanLoading(false);
     } else {
       const data = {};
       if (name) data.name = name;
       if (password) data.password = password;
-      if (contact) data.contact = contact;
+      if (contact?.length === 13) {
+        data.contact = contact;
+      }
       data.id = updateUser?._id;
       data.role = roles.SALES_MAN;
       setAddSalesmanLoading(true);
 
       try {
-        if (data?.contact?.length < 13) {
-          alert("Invalid Contact");
+        if (!data?.contact && contact?.length > 3) {
+          alert("Contact Length Must Be 13");
         } else {
           const response = await axios.put("user/updatesalesman", data);
           if (response?.data) {
@@ -111,7 +115,10 @@ const Users = () => {
           }
         }
       } catch (error) {
-        setaddSalesmanErr(error?.response?.data?.message);
+        error?.response?.data?.message?.includes("dup")
+          ? setaddSalesmanErr("Salesman with this number already exist.")
+          : setaddSalesmanErr("Unable to update salesman.");
+        setTimeout(() => setaddSalesmanErr(""), 2000);
       }
       setAddSalesmanLoading(false);
     }

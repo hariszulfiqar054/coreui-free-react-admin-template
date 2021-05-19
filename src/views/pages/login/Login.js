@@ -67,17 +67,6 @@ const Login = () => {
         setContactErr(error?.message);
         setTimeout(() => setContactErr(""), 2000);
       }
-
-      // .then((data) => {
-      //   let code = prompt("Enter otp", "");
-      //   if (code == null) return;
-      //   data
-      //     .confirm(code)
-      //     .then((result) => {
-      //       console.log("User Verfied");
-      //     })
-      //     .catch((e) => setContactErr("User not verified"));
-      // });
     } else {
       setContactErr("Please Enter The Valid Contact Number");
       setTimeout(() => setContactErr(""), 2000);

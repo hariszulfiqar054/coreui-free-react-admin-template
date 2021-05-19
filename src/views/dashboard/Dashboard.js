@@ -97,42 +97,42 @@ const Dashboard = () => {
                 <CRow className="text-center">
                   <CCol md sm="12" className="mb-sm-2 mb-0">
                     <div className="text-muted">Completed Orders</div>
-                    <strong>29.703 Users (40%)</strong>
+                    <strong>{data?.data?.orders?.completed}</strong>
                     <CProgress
                       className="progress-xs mt-2"
                       precision={1}
                       color="success"
-                      value={40}
+                      value={parseInt(data?.data?.orders?.completed)}
                     />
                   </CCol>
                   <CCol md sm="12" className="mb-sm-2 mb-0 d-md-down-none">
                     <div className="text-muted">Accepted Orders</div>
-                    <strong>24.093 Users (20%)</strong>
+                    <strong>{data?.data?.orders?.accepted}</strong>
                     <CProgress
                       className="progress-xs mt-2"
                       precision={1}
                       color="info"
-                      value={40}
+                      value={parseInt(data?.data?.orders?.accepted)}
                     />
                   </CCol>
                   <CCol md sm="12" className="mb-sm-2 mb-0">
                     <div className="text-muted">Pending Orders</div>
-                    <strong>78.706 Views (60%)</strong>
+                    <strong>{data?.data?.orders?.pending}</strong>
                     <CProgress
                       className="progress-xs mt-2"
                       precision={1}
                       color="warning"
-                      value={40}
+                      value={parseInt(data?.data?.orders?.pending)}
                     />
                   </CCol>
                   <CCol md sm="12" className="mb-sm-2 mb-0">
                     <div className="text-muted">Cancelled Orders</div>
-                    <strong>22.123 Users (80%)</strong>
+                    <strong>{data?.data?.orders?.cancelled}</strong>
                     <CProgress
                       className="progress-xs mt-2"
                       precision={1}
                       color="danger"
-                      value={40}
+                      value={parseInt(data?.data?.orders?.cancelled)}
                     />
                   </CCol>
                 </CRow>

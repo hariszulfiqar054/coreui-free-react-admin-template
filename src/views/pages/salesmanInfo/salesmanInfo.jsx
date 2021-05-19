@@ -69,9 +69,27 @@ function SalesmanInfo(props) {
           </div>
           <div style={{ marginTop: "10px" }}>
             <span style={{ fontSize: "20px", fontWeight: "bold" }}>
-              Salesman Order Taken :{" "}
+              Salesman Completed Orders :{" "}
             </span>{" "}
-            <span style={{ fontSize: "20px" }}>{orderCount?.orderCount}</span>
+            <span style={{ fontSize: "20px" }}>{orderCount?.completeOrders}</span>
+          </div>
+          <div style={{ marginTop: "10px" }}>
+            <span style={{ fontSize: "20px", fontWeight: "bold" }}>
+              Salesman Accepted Orders :{" "}
+            </span>{" "}
+            <span style={{ fontSize: "20px" }}>{orderCount?.acceptedOrders}</span>
+          </div>
+          <div style={{ marginTop: "10px" }}>
+            <span style={{ fontSize: "20px", fontWeight: "bold" }}>
+              Salesman Pending Orders :{" "}
+            </span>{" "}
+            <span style={{ fontSize: "20px" }}>{orderCount?.pendingOrders}</span>
+          </div>
+          <div style={{ marginTop: "10px" }}>
+            <span style={{ fontSize: "20px", fontWeight: "bold" }}>
+              Salesman Cancelled Orders :{" "}
+            </span>{" "}
+            <span style={{ fontSize: "20px" }}>{orderCount?.cancelledOrders}</span>
           </div>
         </>
       )}
