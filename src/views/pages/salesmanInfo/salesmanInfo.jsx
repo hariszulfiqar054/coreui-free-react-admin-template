@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import axios from "axios";
 import { CAlert, CSpinner } from "@coreui/react";
+import { CChart } from "@coreui/react-chartjs";
 
 function SalesmanInfo(props) {
   const [isLoading, setLoading] = useState(false);
@@ -71,28 +72,97 @@ function SalesmanInfo(props) {
             <span style={{ fontSize: "20px", fontWeight: "bold" }}>
               Salesman Completed Orders :{" "}
             </span>{" "}
-            <span style={{ fontSize: "20px" }}>{orderCount?.completeOrders}</span>
+            <span style={{ fontSize: "20px" }}>
+              {orderCount?.completeOrders}
+            </span>
           </div>
           <div style={{ marginTop: "10px" }}>
             <span style={{ fontSize: "20px", fontWeight: "bold" }}>
               Salesman Accepted Orders :{" "}
             </span>{" "}
-            <span style={{ fontSize: "20px" }}>{orderCount?.acceptedOrders}</span>
+            <span style={{ fontSize: "20px" }}>
+              {orderCount?.acceptedOrders}
+            </span>
           </div>
           <div style={{ marginTop: "10px" }}>
             <span style={{ fontSize: "20px", fontWeight: "bold" }}>
               Salesman Pending Orders :{" "}
             </span>{" "}
-            <span style={{ fontSize: "20px" }}>{orderCount?.pendingOrders}</span>
+            <span style={{ fontSize: "20px" }}>
+              {orderCount?.pendingOrders}
+            </span>
           </div>
           <div style={{ marginTop: "10px" }}>
             <span style={{ fontSize: "20px", fontWeight: "bold" }}>
               Salesman Cancelled Orders :{" "}
             </span>{" "}
-            <span style={{ fontSize: "20px" }}>{orderCount?.cancelledOrders}</span>
+            <span style={{ fontSize: "20px" }}>
+              {orderCount?.cancelledOrders}
+            </span>
           </div>
         </>
       )}
+      <div className="w-100 d-flex justify-content-center">
+        <CChart
+          style={{
+            width: "50%",
+            height: "50%",
+          }}
+          type="bar"
+          datasets={[
+            {
+              label: "Target",
+              backgroundColor: "#51c4d3",
+              borderColor: "#51c4d3",
+              pointBackgroundColor: "#51c4d3",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "#51c4d3",
+              tooltipLabelColor: "#51c4d3",
+              data: [salesmanInfo?.target],
+            },
+            {
+              label: "Completed Orders",
+              backgroundColor: "#a5e1ad",
+              borderColor: "#a5e1ad",
+              pointBackgroundColor: "#a5e1ad",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "#a5e1ad",
+              tooltipLabelColor: "#a5e1ad",
+              data: [Number(orderCount?.completeOrders)],
+            },
+            {
+              label: "Pending Orders",
+              backgroundColor: "#fdca40",
+              borderColor: "#fdca40",
+              pointBackgroundColor: "#fdca40",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "#fdca40",
+              tooltipLabelColor: "#fdca40",
+              data: [Number(orderCount?.acceptedOrders)],
+            },
+            {
+              label: "Cancelled Orders",
+              backgroundColor: "#ff5200",
+              borderColor: "#ff5200",
+              pointBackgroundColor: "#ff5200",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "#ff5200",
+              tooltipLabelColor: "#ff5200",
+              data: [Number(orderCount?.cancelledOrders)],
+            },
+          ]}
+          options={{
+            aspectRatio: 1.5,
+            tooltips: {
+              enabled: true,
+            },
+          }}
+        />
+      </div>
     </div>
   );
 }

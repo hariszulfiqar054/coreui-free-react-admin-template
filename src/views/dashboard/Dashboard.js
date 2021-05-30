@@ -72,25 +72,20 @@ const Dashboard = () => {
                     <h4 id="traffic" className="card-title mb-0">
                       Sales Data
                     </h4>
-                    <div className="small text-muted">November 2017</div>
-                  </CCol>
-                  <CCol sm="7" className="d-none d-md-block">
-                    <CButtonGroup className="float-right mr-3">
-                      {["Month", "Year"].map((value) => (
-                        <CButton
-                          color="outline-secondary"
-                          key={value}
-                          className="mx-0"
-                          active={value === "Month"}
-                        >
-                          {value}
-                        </CButton>
-                      ))}
-                    </CButtonGroup>
                   </CCol>
                 </CRow>
                 <MainChartExample
                   style={{ height: "300px", marginTop: "40px" }}
+                  complete={data?.data?.orders?.completed}
+                  accept={data?.data?.orders?.accepted}
+                  cancel={data?.data?.orders?.cancelled}
+                  pending={data?.data?.orders?.pending}
+                  total={
+                    Number(data?.data?.orders?.pending) +
+                    Number(data?.data?.orders?.cancelled) +
+                    Number(data?.data?.orders?.accepted) +
+                    Number(data?.data?.orders?.completed)
+                  }
                 />
               </CCardBody>
               <CCardFooter>

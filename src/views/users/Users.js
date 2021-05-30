@@ -72,7 +72,7 @@ const Users = () => {
   };
 
   //Add Salesman
-  const addSalesman = async ({ name, contact, password }) => {
+  const addSalesman = async ({ name, contact, password, target, area }) => {
     if (actionType == "add") {
       setAddSalesmanLoading(true);
       try {
@@ -80,6 +80,8 @@ const Users = () => {
           name,
           contact,
           password,
+          target,
+          area,
         });
         if (response?.data) {
           setAddStockToggle(false);
@@ -100,6 +102,8 @@ const Users = () => {
       if (contact?.length === 13) {
         data.contact = contact;
       }
+      if (area) data.area = area;
+      if (target > 0) data.target = target;
       data.id = updateUser?._id;
       data.role = roles.SALES_MAN;
       setAddSalesmanLoading(true);
@@ -169,6 +173,8 @@ const Users = () => {
             name: "",
             contact: "+92",
             password: "",
+            target: 0,
+            area: "",
           }}
           validationSchema={
             actionType &&
@@ -181,6 +187,8 @@ const Users = () => {
                 .max(13, "Contact length should be 13 digits"),
 
               password: Yup.string().required("Required"),
+              target: Yup.number("Invalid Number").required("Required"),
+              area: Yup.string().required("Required").min(5, "Invalid Area"),
             })
           }
           onSubmit={(values, { resetForm }) => {
@@ -252,6 +260,48 @@ const Users = () => {
                         {errors.contact && touched.contact
                           ? errors.contact
                           : "Please enter salesman contact"}
+                      </p>
+                    </CFormText>
+                  </CFormGroup>
+                  <CFormGroup>
+                    <CLabel>Monthly Target</CLabel>
+                    <CInput
+                      onChange={handleChange("target")}
+                      onBlur={handleBlur("target")}
+                      value={values.target}
+                      placeholder="Enter Monthly Target.."
+                      type="number"
+                      min="0"
+                    />
+                    <CFormText className="help-block">
+                      <p
+                        style={{
+                          color: errors.target && touched.target && "red",
+                        }}
+                      >
+                        {errors.name && touched.name
+                          ? errors.name
+                          : "Please enter target"}
+                      </p>
+                    </CFormText>
+                  </CFormGroup>
+                  <CFormGroup>
+                    <CLabel>Assigned Area</CLabel>
+                    <CInput
+                      onChange={handleChange("area")}
+                      onBlur={handleBlur("area")}
+                      value={values.area}
+                      placeholder="Enter Area.."
+                    />
+                    <CFormText className="help-block">
+                      <p
+                        style={{
+                          color: errors.area && touched.area && "red",
+                        }}
+                      >
+                        {errors.area && touched.area
+                          ? errors.area
+                          : "Please enter salesman assigned area"}
                       </p>
                     </CFormText>
                   </CFormGroup>
@@ -352,6 +402,16 @@ const Users = () => {
                     {
                       key: "password",
                       label: "Password",
+                      _classes: "text-center",
+                    },
+                    {
+                      key: "target",
+                      label: "Monthly Target",
+                      _classes: "text-center",
+                    },
+                    {
+                      key: "area",
+                      label: "Assigned Area",
                       _classes: "text-center",
                     },
                     {
