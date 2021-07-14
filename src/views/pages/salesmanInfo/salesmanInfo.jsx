@@ -28,6 +28,7 @@ function SalesmanInfo(props) {
     }
     setLoading(false);
   };
+  console.log(salesmanInfo)
   return (
     <div>
       {isError.length > 0 && (
@@ -66,6 +67,14 @@ function SalesmanInfo(props) {
             </span>{" "}
             <span style={{ fontSize: "20px" }}>
               {moment(salesmanInfo?.time_stamp).format("DD MMM, YYYY")}
+            </span>
+          </div>
+          <div style={{ marginTop: "10px" }}>
+            <span style={{ fontSize: "20px", fontWeight: "bold" }}>
+              Salesman Monthly Target :{" "}
+            </span>{" "}
+            <span style={{ fontSize: "20px" }}>
+              {salesmanInfo?.target}
             </span>
           </div>
           <div style={{ marginTop: "10px" }}>
@@ -133,6 +142,17 @@ function SalesmanInfo(props) {
               data: [Number(orderCount?.completeOrders)],
             },
             {
+              label: "Accepted Orders",
+              backgroundColor: "#E98580",
+              borderColor: "#E98580",
+              pointBackgroundColor: "#E98580",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "#E98580",
+              tooltipLabelColor: "#E98580",
+              data: [Number(orderCount?.acceptedOrders)],
+            },
+            {
               label: "Pending Orders",
               backgroundColor: "#fdca40",
               borderColor: "#fdca40",
@@ -141,7 +161,7 @@ function SalesmanInfo(props) {
               pointHoverBackgroundColor: "#fff",
               pointHoverBorderColor: "#fdca40",
               tooltipLabelColor: "#fdca40",
-              data: [Number(orderCount?.acceptedOrders)],
+              data: [Number(orderCount?.pendingOrders)],
             },
             {
               label: "Cancelled Orders",

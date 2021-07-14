@@ -81,7 +81,8 @@ const Stocks = () => {
         refetch();
       }
     } catch (error) {
-      setDelErr("Error while deleting announcement");
+      setDelErr("Error while deleting stock");
+      setTimeout(() => setDelErr("Error while deleting stock"), 3000);
     }
     setaddLoading(false);
   };
@@ -90,6 +91,7 @@ const Stocks = () => {
   const updateItem = async () => {
     if (!announceTxt && !itemQty && !price) {
       setAddAnnErr("Fill Atleast one field");
+      setTimeout(()=>setAddAnnErr(""),3000)
     } else {
       setaddLoading(true);
       const data = {};
@@ -109,6 +111,8 @@ const Stocks = () => {
         }
       } catch (error) {
         setAddAnnErr("Error while updating item");
+
+        setTimeout(() => setAddAnnErr(""), 3000);
       }
       setaddLoading(false);
     }
@@ -118,8 +122,10 @@ const Stocks = () => {
   const addItem = async () => {
     if (!announceTxt || !itemQty || !img || !price) {
       setAddAnnErr("Fill all fields");
+      setTimeout(() => setAddAnnErr(""), 3000);
     } else if (!/^\d+$/.test(itemQty)) {
       setAddAnnErr("Quantity Should be in numeric");
+      setTimeout(() => setAddAnnErr(""), 3000);
     } else {
       setaddLoading(true);
       try {
@@ -141,6 +147,7 @@ const Stocks = () => {
       } catch (error) {
         console.log(error?.response?.data);
         setAddAnnErr("Error while adding item");
+        setTimeout(() => setAddAnnErr(""), 3000);
       }
       setaddLoading(false);
     }

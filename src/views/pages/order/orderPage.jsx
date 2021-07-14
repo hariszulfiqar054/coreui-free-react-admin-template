@@ -103,7 +103,7 @@ const OrderPage = () => {
     try {
       const response = await axios.put("order/completeOrder", { id });
       if (response?.data) {
-        setStatus({ success: response?.data?.message, error: "" });
+        setStatus({ success: 'Order Completed Successfully', error: "" });
         refetch();
       }
       setTimeout(() => setStatus({ success: "", error: "" }), 3000);
