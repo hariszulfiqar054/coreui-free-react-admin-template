@@ -65,7 +65,7 @@ function Trackuser(props) {
           <CModalTitle>User Data</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <p>Salesman Name : {user?.name}</p>
+          <p>Salesman Name : {userData?.name}</p>
           <p>Salesman Assigned Area : {userData?.area}</p>
         </CModalBody>
         <CModalFooter>

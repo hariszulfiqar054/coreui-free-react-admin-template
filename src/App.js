@@ -19,6 +19,9 @@ const Page404 = React.lazy(() => import("./views/pages/page404/Page404"));
 const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 
 class App extends Component {
+  componentDidMount() {
+    document.title = "Track It";
+  }
   render() {
     return (
       <HashRouter>
